@@ -553,13 +553,12 @@ tasks:
         - eng
 
 
+########## CLEANUP ##########
 ##### Clean finished torrents from transmission#
   clean-transmission:
-    priority: 24
+    priority: 34
     disable: details
     clean_transmission:
       <<: *transmission-settings
       finished_for: 1 day
 
-
-########## UPDATES ##########
