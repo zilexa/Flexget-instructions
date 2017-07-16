@@ -1,6 +1,6 @@
 variables: secrets.yml
 schedules:
-  - tasks: ['populate-*', 'clean-*', 'update-*']
+  - tasks: ['populate-*', 'clean-*']
     schedule:
       hour: 0
   - tasks: ['fill-*', '*-rss']
@@ -257,6 +257,7 @@ tasks:
       list: "{? trakt.series ?}"
       context: watched
       position: next
+      strip_dates: yes
     accept_all: yes 
     set_series_begin: yes
 
@@ -289,16 +290,17 @@ tasks:
     inputs:
       - rss: http://showrss.info/other/all.rss      
       - rss: https://eztv.ag/ezrss.xml
-      - rss: https://www.limetorrents.cc/rss/20/
+      - rss: https://rarbg.to/rssdd.php?category=1;18;41;49
       - rss: 
           url: https://zooqle.com/search?q=%2A+category%3ATV&fmt=rss
           title: 'torrent:fileName'
+      - rss: https://www.limetorrents.cc/rss/20/
       - rss: https://www.t411.al/rss/?cat=433
 
 
-##### Discover and download older episodes and pilots from recently added series#
+##### Discover and download older episodes or season packs#
   download-series-discover:
-    priority: 8
+    priority: 6
     template:
       - series
       - reject
@@ -326,7 +328,7 @@ tasks:
 
 ##### Remove manually downloaded movies from the movie queue and trakt list#
   clean-movies-queue:
-    priority: 31
+    priority: 11
     template:
       - disable-seen-retry
       - movies-metainfo
@@ -346,7 +348,7 @@ tasks:
 
 ##### Fill the movie queue with movies from trakt list#
   fill-movies-queue:
-    priority: 32
+    priority: 12
     trakt_list:
       account: "{? trakt.account ?}"
       list: "{? trakt.movies ?}"
@@ -359,7 +361,7 @@ tasks:
 
 ##### Download movies manually downloaded torrents#
   download-movies-manual:
-    priority: 34
+    priority: 13
     template:
       - disable-seen-retry
       - movies-metainfo
@@ -381,7 +383,7 @@ tasks:
 
 ##### Discover and download 1080p movies#
   download-movies-1080p-discover:
-    priority: 37
+    priority: 14
     template:
       - movies-1080p
       - reject
@@ -416,7 +418,7 @@ tasks:
 
 ##### Discover and download 720p movies, if the movie is not recent#
   download-movies-720p-discover:
-    priority: 38
+    priority: 15
     template:
       - movies-720p
       - reject
@@ -455,7 +457,7 @@ tasks:
 
 ##### Move series from downloads folder to respective folders, along with existing subtitles and adding the files to the subtitle queue#
   move-series:
-    priority: 41
+    priority: 21
     template:
       - disable-seen-retry
       - series-metainfo
@@ -494,7 +496,7 @@ tasks:
 ##### Move movies from downloads folder to the movies folder, along with possible subtitles and adding the files to the subtitle queue#
 
   move-movies:
-    priority: 43
+    priority: 22
     template:
       - disable-seen-retry
       - movies-metainfo
@@ -536,7 +538,7 @@ tasks:
 
 ##### Download subtitles for the previously queued files#
   download-subtitles:
-    priority: 45
+    priority: 23
     template:
       - disable-seen-retry
     subtitle_list:
@@ -553,7 +555,7 @@ tasks:
 
 ##### Clean finished torrents from transmission#
   clean-transmission:
-    priority: 47
+    priority: 24
     disable: details
     clean_transmission:
       <<: *transmission-settings
@@ -561,46 +563,3 @@ tasks:
 
 
 ########## UPDATES ##########
-
-##### Update trakt series list from local series folders, excluding the ones that already ended#
-  update-series-list:
-    priority: 51
-    template:
-      - disable-seen-retry
-      - series-metainfo
-    filesystem:
-      path: "/{? folder.root ?}{? folder.series ?}"
-      retrieve: dirs
-    manipulate:
-      - title:
-          replace:
-            regexp: '$'
-            format: ' S01E01'
-    accept_all: yes
-    if:
-      - tvdb_status == 'Ended': reject
-    list_add:
-      - trakt_list:
-          account: "{? trakt.account ?}"
-          list: "{? trakt.series ?}"
-          type: shows
-
-
-##### Clean the series that already ended from trakt series list#
-  clean-series-list:
-    priority: 53
-    delay: 8 day
-    template:
-      - disable-seen-retry
-      - series-metainfo
-    trakt_list:
-      account: "{? trakt.account ?}"
-      list: "{? trakt.series ?}"
-      type: shows
-    if:
-      - tvdb_status == 'Ended': accept
-    list_remove:
-      - trakt_list:
-          account: "{? trakt.account ?}"
-          list: "{? trakt.series ?}"
-          type: shows
