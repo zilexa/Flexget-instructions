@@ -249,7 +249,7 @@ tasks:
     list_add:
       - entry_list: trakt-series
 
-##### (First time run) Sync Flexget database with watched status in Trakt#  
+##### Set the first ep to search for every series, based on Trakt watched status#  
   sync-trakt-nextep:
     priority: 3
     next_trakt_episodes:
