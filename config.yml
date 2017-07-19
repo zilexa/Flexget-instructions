@@ -23,7 +23,7 @@ templates:
   series:
     thetvdb_lookup: yes
     tvmaze_lookup: yes
-    include: series.yml
+    trakt_lookup: yes
     configure_series:
       from:
         entry_list: trakt-series
@@ -34,6 +34,7 @@ templates:
         quality: webrip+ <720p !10bit !h265
         propers: 48 hours
         specials: no
+        season_packs: 3
     content_size:
       min: 100
     content_filter:
@@ -228,6 +229,9 @@ tasks:
           retrieve: dirs
       settings:
         tracking: no
+        identified_by: ep
+
+
 
 ##### Fetch, format and output trakt series list to a custom entry list#
   fill-series-list:
@@ -242,6 +246,7 @@ tasks:
       account: "{? trakt.account ?}"
       list: "{? trakt.series ?}"
       type: shows
+      strip_dates: yes
     accept_all: yes
     set:
       title: "{{tvdb_series_name|escape|replace('&#39;', '')}}"
@@ -249,9 +254,10 @@ tasks:
     list_add:
       - entry_list: trakt-series
 
-##### Set the first ep to search for every series, based on Trakt watched status#  
-  sync-trakt-nextep:
-    priority: 3
+
+##### (First time run) Sync Flexget database with watched status in Trakt#  
+  setbegin-series-trakt:
+    priority: 4
     next_trakt_episodes:
       account: "{? trakt.account ?}"
       list: "{? trakt.series ?}"
@@ -261,10 +267,11 @@ tasks:
     accept_all: yes 
     set_series_begin: yes
 
+  
 
 ##### Download episodes from manually downloaded torrents#
   download-series-manual:
-    priority: 4
+    priority: 5
     template:
       - disable-seen-retry
       - series-metainfo
@@ -281,7 +288,7 @@ tasks:
 
 ##### Download episodes from RSS feeds#
   download-series-rss:
-    priority: 5
+    priority: 6
     template:
       - series
       - reject
@@ -298,9 +305,9 @@ tasks:
       - rss: https://www.t411.al/rss/?cat=433
 
 
-##### Discover and download older episodes or season packs#
+##### Discover and download older episodes#
   download-series-discover:
-    priority: 6
+    priority: 7
     template:
       - series
       - reject
@@ -314,6 +321,7 @@ tasks:
       release_estimations: strict
       interval: 15 minutes
       what:
+        - next_series_seasons: yes
         - next_series_episodes: yes
       from:
         - piratebay:
@@ -469,7 +477,7 @@ tasks:
     accept_all: yes
     move:
       to: "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}}/"
-      rename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}"
+      rename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
       along:
         extensions:
           - srt
@@ -512,7 +520,7 @@ tasks:
         - \bsample\b
     move:
       to: "/{? folder.root ?}{? folder.movies ?}"
-      rename: "{{tmdb_name|pathscrub}} ({{tmdb_year}}){% if quality|default(False) %} - [{{quality}}]{% endif %}"
+      rename: "{{tmdb_name|pathscrub}} ({{tmdb_year}}){% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
       along:
         extensions:
           - srt
@@ -553,12 +561,13 @@ tasks:
         - eng
 
 
-########## CLEANUP ##########
 ##### Clean finished torrents from transmission#
   clean-transmission:
-    priority: 34
+    priority: 24
     disable: details
     clean_transmission:
       <<: *transmission-settings
       finished_for: 1 day
 
+
+########## UPDATES ##########
