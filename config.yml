@@ -31,7 +31,7 @@ templates:
         identified_by: ep
         timeframe: 1 hours
         target: webrip+ <720p !10bit !h265
-        quality: webrip+ <720p !10bit !h265
+        quality: webrip+ 720p-1080p !10bit !h265
         propers: 48 hours
         specials: no
         season_packs: 3
