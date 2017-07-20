@@ -26,6 +26,6 @@ Movies:
 
 Organising everything:
 - Searches and downloads matching subtitles for all downloads.
-- Moves & renames files to organise them properly in your folders (Movies\movie name\..., TVshows\series name\...). The series/movies title, episode or year, quality and releasegroup will be in the name. This allows you to search and find subtitles using your TV remote during playblack in Kodi.
+- Moves & renames files to organise them properly in your folders (Movies\movie name\..., TVshows\series name\...). The series/movies title, episode or year, quality and releasegroup will be in the name. This allows you to easily search and find subtitles in the future using your TV remote during playblack in Kodi. Note that Flexget is much better at this task so chance is very slim you ever need to do this.
 - Keeps Transmission, which is used for downloading, clean. 
 - Triggers an update of your Kodi library after files have been processed.
