@@ -1,9 +1,11 @@
+INTRO:
 To get a "Netflix-like" experience, please use AUTOSETUP.SH to install and configure the required tools. It will include this config.yml for Flexget. 
 
-Details:
-Fully based on Jonybat's config.yml. See the CHANGELOG for all changes made to his config.yml. 
+NOTE:
+This Flexget config is based on Jonybat's config.yml. See the CHANGELOG for a full list of changes made to his config.yml. 
 
-To get a "Netflix-like" experience, this config.yml does the following (in non-technical terms):
+In non-Flexget/non-technical terms, this config will allow Flexget to do the following on a daily basis, some tasks are performed more often:
+
 TVshows:
 - Gets the series titles you follow on Trakt.
 - Gets the next episode you need based on your Watched Status in Trakt.
