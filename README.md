@@ -4,7 +4,7 @@ To get a "Netflix-like" experience, please use AUTOSETUP.SH to install and confi
 NOTE:
 This Flexget config is based on Jonybat's config.yml. See the CHANGELOG for a full list of changes made to his config.yml. 
 
-In non-Flexget/non-technical terms, this config will allow Flexget to do the following on a daily basis, some tasks are performed more often:
+In non-Flexget/non-technical terms, this config will allow Flexget to do the following on a daily basis **AUTOMATICALLY**, some tasks are performed more often:
 
 TVshows:
 - Gets the series titles you follow on Trakt.
