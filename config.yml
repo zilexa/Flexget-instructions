@@ -12,7 +12,7 @@ schedules:
   - tasks: ['move-*', download-subtitles]
     schedule:
       minute: 15,45
-  - tasks: ['sync-*']
+  - tasks: ['setbegin-*']
     interval:
       weeks: 1
 
@@ -31,7 +31,7 @@ templates:
         identified_by: ep
         timeframe: 1 hours
         target: webrip+ <720p !10bit !h265
-        quality: webrip+ 720p-1080p !10bit !h265
+        quality: webrip+ <=720p !10bit !h265
         propers: 48 hours
         specials: no
         season_packs: 3
@@ -135,11 +135,10 @@ templates:
       reject_for: 15 minutes
     magnets: no
     convert_magnet:
-      timeout: 20 seconds
-      force: yes
+      timeout: 60 seconds
     # Might need to disable if you are getting errors connecting to https sources
     # Can remove if you upgrade to python 2.7.9+ or install requests[security]
-    #verify_ssl_certificates: no
+    verify_ssl_certificates: no
     domain_delay:
       thepiratebay.se: 10 seconds
       thepiratebay.org: 10 seconds
@@ -159,7 +158,7 @@ templates:
       main_file_only: yes
       include_subs: yes
       rename_like_files: yes
-      content_filename: "{{tvdb_series_name|default(series_name)|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}"
+      content_filename: "{{tvdb_series_name|default(series_name)|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
       path: "/{? folder.root ?}{? folder.downmedia ?}{{tvdb_series_name|default(series_name)|pathscrub}}/"
 
 ##### Transmission movies config#
@@ -169,7 +168,7 @@ templates:
       main_file_only: yes
       include_subs: yes
       rename_like_files: yes
-      content_filename: "{{tmdb_name|pathscrub}} ({{tmdb_year}}){% if quality|default(False) %} - [{{quality}}]{% endif %}"
+      content_filename: "{{tmdb_name|pathscrub}} ({{tmdb_year}}){% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
       path: "/{? folder.root ?}{? folder.downmedia ?}{{movie_name|pathscrub}}"
 
 ##### Pushbullet config#
@@ -302,7 +301,7 @@ tasks:
           url: https://zooqle.com/search?q=%2A+category%3ATV&fmt=rss
           title: 'torrent:fileName'
       - rss: https://www.limetorrents.cc/rss/20/
-      - rss: https://www.t411.al/rss/?cat=433
+      - rss: http://www.t411.top/rss/?cat=433
 
 
 ##### Discover and download older episodes#
@@ -313,10 +312,10 @@ tasks:
       - reject
       - torrents
       - transmission-series
+      - series-metainfo
     magnets: yes
     convert_magnet:
-      timeout: 10 seconds
-      force: yes
+      timeout: 60 seconds
     discover:
       release_estimations: strict
       interval: 15 minutes
@@ -402,8 +401,7 @@ tasks:
       - "/{? folder.root ?}{? folder.movies ?}"
     magnets: yes
     convert_magnet:
-      timeout: 10 seconds
-      force: yes
+      timeout: 60 seconds
     discover:
       release_estimations: loose
       interval: 15 minutes
@@ -437,8 +435,7 @@ tasks:
       - "/{? folder.root ?}{? folder.movies ?}"
     magnets: yes
     convert_magnet:
-      timeout: 10 seconds
-      force: yes
+      timeout: 60 seconds
     discover:
       release_estimations: loose
       interval: 15 minutes
@@ -463,7 +460,8 @@ tasks:
 
 ########## LIBRARY ##########
 
-##### Move series from downloads folder to respective folders, along with existing subtitles and adding the files to the subtitle queue#
+##### Move series from downloads folder to respective folders, along with existing subtitles and adding the files to the subtitle queue
+#
   move-series:
     priority: 21
     template:
@@ -498,6 +496,7 @@ tasks:
     exec:
       on_exit:
         phase: find "/{? folder.root ?}{? folder.downmedia ?}"* -type d -empty -delete
+
 
 
 
