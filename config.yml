@@ -134,8 +134,6 @@ templates:
       min_seeds: 3
       reject_for: 15 minutes
     magnets: no
-    convert_magnet:
-      timeout: 60 seconds
     # Might need to disable if you are getting errors connecting to https sources
     # Can remove if you upgrade to python 2.7.9+ or install requests[security]
     verify_ssl_certificates: no
@@ -159,7 +157,7 @@ templates:
       include_subs: yes
       rename_like_files: yes
       content_filename: "{{tvdb_series_name|default(series_name)|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
-      path: "/{? folder.root ?}{? folder.downmedia ?}{{tvdb_series_name|default(series_name)|pathscrub}}/"
+      path: "/{? folder.root ?}{? folder.downseries ?}{{tvdb_series_name|default(series_name)|pathscrub}}/"
 
 ##### Transmission movies config#
   transmission-movies:
@@ -169,7 +167,7 @@ templates:
       include_subs: yes
       rename_like_files: yes
       content_filename: "{{tmdb_name|pathscrub}} ({{tmdb_year}}){% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
-      path: "/{? folder.root ?}{? folder.downmedia ?}{{movie_name|pathscrub}}"
+      path: "/{? folder.root ?}{? folder.downmovies ?}{{movie_name|pathscrub}}"
 
 ##### Pushbullet config#
 #  pushbullet:
@@ -192,6 +190,7 @@ templates:
   series-metainfo:
     metainfo_series: yes
     thetvdb_lookup: yes
+    require_field: series_name
 
 ##### Guessit parsing for some series tasks, not applied to all tasks because it causes issues with "name (year)" based series, like scandal#
   series-guessit:
@@ -203,6 +202,7 @@ templates:
     tmdb_lookup: yes
     parsing:
       movie: guessit
+    metainfo_movie: yes
 
 
 tasks:
@@ -249,7 +249,6 @@ tasks:
     accept_all: yes
     set:
       title: "{{tvdb_series_name|escape|replace('&#39;', '')}}"
-      set_series_begin: yes
     list_add:
       - entry_list: trakt-series
 
@@ -277,7 +276,7 @@ tasks:
       - series-guessit
       - transmission-series
     filesystem:
-      path: "/{? folder.root ?}{? folder.downmedia ?}"
+      path: "/{? folder.root ?}{? folder.downseries ?}"
       mask: '*.torrent'
     accept_all: yes
     exec:
@@ -374,7 +373,7 @@ tasks:
       - movies-metainfo
       - transmission-movies
     filesystem:
-      path: "/{? folder.root ?}{? folder.downmedia ?}"
+      path: "/{? folder.root ?}{? folder.downmovies ?}"
       mask: '*.torrent'
     accept_all: yes
     exec:
@@ -397,7 +396,7 @@ tasks:
       - torrents
       - transmission-movies
     exists_movie:
-      - "/{? folder.root ?}{? folder.downmedia ?}"
+      - "/{? folder.root ?}{? folder.downmovies ?}"
       - "/{? folder.root ?}{? folder.movies ?}"
     magnets: yes
     convert_magnet:
@@ -431,7 +430,7 @@ tasks:
       - torrents
       - transmission-movies
     exists_movie:
-      - "/{? folder.root ?}{? folder.downmedia ?}"
+      - "/{? folder.root ?}{? folder.downmovies ?}"
       - "/{? folder.root ?}{? folder.movies ?}"
     magnets: yes
     convert_magnet:
@@ -461,14 +460,14 @@ tasks:
 ########## LIBRARY ##########
 
 ##### Move series from downloads folder to respective folders, along with existing subtitles and adding the files to the subtitle queue
-#
+#require_field: series_name
   move-series:
     priority: 21
     template:
       - disable-seen-retry
       - series-metainfo
     filesystem:
-      path: "/{? folder.root ?}{? folder.downmedia ?}"
+      path: "/{? folder.root ?}{? folder.downseries ?}"
       recursive: yes
       retrieve: files
       regexp: '.*\.(avi|mkv|mp4)$'
@@ -495,7 +494,7 @@ tasks:
           remove_after: 7 days
     exec:
       on_exit:
-        phase: find "/{? folder.root ?}{? folder.downmedia ?}"* -type d -empty -delete
+        phase: find "/{? folder.root ?}{? folder.downseries ?}"* -type d -empty -delete
 
 
 
@@ -508,7 +507,7 @@ tasks:
       - disable-seen-retry
       - movies-metainfo
     filesystem:
-      path: "/{? folder.root ?}{? folder.downmedia ?}"
+      path: "/{? folder.root ?}{? folder.downmovies ?}"
       recursive: yes
       retrieve: files
       regexp: '.*\.(avi|mkv|mp4)$'
@@ -539,7 +538,7 @@ tasks:
           remove_after: 7 days
     exec:
       on_exit:
-        phase: find "/{? folder.root ?}{? folder.downmedia ?}"* -type d -empty -delete
+        phase: find "/{? folder.root ?}{? folder.downmovies ?}"* -type d -empty -delete
 
 
 
@@ -560,13 +559,31 @@ tasks:
         - eng
 
 
-##### Clean finished torrents from transmission#
+
+########## CLEANUP ##########
+
   clean-transmission:
-    priority: 24
+    priority: 31
     disable: details
     clean_transmission:
       <<: *transmission-settings
       finished_for: 1 day
 
-
-########## UPDATES ##########
+  clean-series-list:
+    priority: 53
+    delay: 8 day
+    template:
+      - disable-seen-retry
+      - series-metainfo
+      - pushbullet
+    trakt_list:
+      account: "{? trakt.account ?}"
+      list: "{? trakt.series ?}"
+      type: shows
+    if:
+      - tvdb_status == 'Ended' and trakt_watched == 'True': accept
+    list_remove:
+      - trakt_list:
+          account: "{? trakt.account ?}"
+          list: "{? trakt.series ?}"
+          type: shows
