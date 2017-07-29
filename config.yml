@@ -190,7 +190,7 @@ templates:
   series-metainfo:
     metainfo_series: yes
     thetvdb_lookup: yes
-    require_field: series_name
+
 
 ##### Guessit parsing for some series tasks, not applied to all tasks because it causes issues with "name (year)" based series, like scandal#
   series-guessit:
@@ -248,7 +248,7 @@ tasks:
       strip_dates: yes
     accept_all: yes
     set:
-      title: "{{tvdb_series_name|escape|replace('&#39;', '')}}"
+      title: "{{tvdb_series_name|escape|replace('&#39;', '')}} {{series_id}}"
     list_add:
       - entry_list: trakt-series
 
@@ -264,8 +264,6 @@ tasks:
       strip_dates: yes
     accept_all: yes 
     set_series_begin: yes
-    set:
-      title: "{{tvdb_series_name|escape|replace('&#39;', '')}}"
 
 
 
@@ -474,6 +472,7 @@ tasks:
       retrieve: files
       regexp: '.*\.(avi|mkv|mp4)$'
     accept_all: yes
+    require_field: trakt_series_name
     move:
       to: "/{? folder.root ?}{? folder.series ?}{{trakt_series_name|escape|replace('&#39;', '')|pathscrub}}/"
       rename: "{{trakt_series_name|escape|replace('&#39;', '')|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
