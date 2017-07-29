@@ -587,7 +587,6 @@ tasks:
     template:
       - disable-seen-retry
       - series-metainfo
-      - pushbullet
     trakt_list:
       account: "{? trakt.account ?}"
       list: "{? trakt.series ?}"
