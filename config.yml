@@ -156,8 +156,8 @@ templates:
       main_file_only: yes
       include_subs: yes
       rename_like_files: yes
-      content_filename: "{{tvdb_series_name|default(series_name)|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
-      path: "/{? folder.root ?}{? folder.downseries ?}{{tvdb_series_name|default(series_name)|pathscrub}}/"
+      content_filename: "{{trakt_series_name|default(series_name)|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
+      path: "/{? folder.root ?}{? folder.downseries ?}{{trakt_series_name|default(series_name)|pathscrub}}/"
 
 ##### Transmission movies config#
   transmission-movies:
@@ -264,8 +264,10 @@ tasks:
       strip_dates: yes
     accept_all: yes 
     set_series_begin: yes
+    set:
+      title: "{{tvdb_series_name|escape|replace('&#39;', '')}}"
 
-  
+
 
 ##### Download episodes from manually downloaded torrents#
   download-series-manual:
@@ -314,7 +316,7 @@ tasks:
       - series-metainfo
     magnets: yes
     convert_magnet:
-      timeout: 60 seconds
+      timeout: 120 seconds
     discover:
       release_estimations: strict
       interval: 15 minutes
@@ -400,7 +402,7 @@ tasks:
       - "/{? folder.root ?}{? folder.movies ?}"
     magnets: yes
     convert_magnet:
-      timeout: 60 seconds
+      timeout: 120 seconds
     discover:
       release_estimations: loose
       interval: 15 minutes
@@ -434,7 +436,7 @@ tasks:
       - "/{? folder.root ?}{? folder.movies ?}"
     magnets: yes
     convert_magnet:
-      timeout: 60 seconds
+      timeout: 120 seconds
     discover:
       release_estimations: loose
       interval: 15 minutes
@@ -473,8 +475,8 @@ tasks:
       regexp: '.*\.(avi|mkv|mp4)$'
     accept_all: yes
     move:
-      to: "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}}/"
-      rename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
+      to: "/{? folder.root ?}{? folder.series ?}{{trakt_series_name|escape|replace('&#39;', '')|pathscrub}}/"
+      rename: "{{trakt_series_name|escape|replace('&#39;', '')|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
       along:
         extensions:
           - srt
@@ -549,14 +551,24 @@ tasks:
       - disable-seen-retry
     subtitle_list:
       list: subtitles
+      recursion_depth: 3
     list_match:
       from:
         - subtitle_list:
             list: subtitles
     subliminal:
-      exact_match: yes
       languages:
         - eng
+      exact_match: yes
+      single: no
+      providers: [opensubtitles, addic7ed, tvsubtitles, podnapisi]
+      authentication:
+        opensubtitles:
+          username: "{? subtitles.user ?}"
+          password: "{? subtitles.pass ?}"
+        addic7ed:
+          username: "{? subtitles.user ?}"
+          password: "{? subtitles.pass ?}"
 
 
 
