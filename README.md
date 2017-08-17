@@ -14,8 +14,9 @@ TVshows:
 - Looks for your series episodes on RSS feeds.
 - Looks for your old series season packs(!) and single episodes by discovering them on several websites.
 - Downloads if they match your requirements to prevent low quality files or language specific versions from being downloaded. 
+- Save to /TVDB seriesname/seasonnumber/ folders so that 1) Kodi will recognise the correct tvshow and 2) Flexget can delete watched seasons once you have started watching the next season (this functionality is not in the config yet)
 - Makes sure to download regular HDTV quality to save space but will accept 720p/1080p quality if regular quality is unavailable.
-- Cleanup your Trakt watchlist for series that have been fully watched and are no longer running. 
+- Cleanup your Trakt watchlist for series that have been fully watched and are no longer running. (this functionality is in the config but it doesn't work yet). 
 
 Movies:
 - Gets the movies you would like to see from your Trakt "watchlist".
@@ -26,6 +27,6 @@ Movies:
 
 Organising everything:
 - Searches and downloads matching subtitles for all downloads.
-- Moves & renames files to organise them properly in your folders (Movies\movie name\..., TVshows\series name\...). The series/movies title, episode or year, quality and releasegroup will be in the name. This allows you to easily search and find subtitles in the future using your TV remote during playblack in Kodi. Note that Flexget is much better at this task so chance is very slim you ever need to do this.
+- Moves & renames files to organise them properly in your folders (Movies\movie name\..., TVshows\series name\...). The series/movies title, episode or year, quality. This allows you to easily search and find subtitles in the future using your TV remote during playblack in Kodi. Note that Flexget is much better at this task so chance is very slim you ever need to do this.
 - Keeps Transmission, which is used for downloading, clean. 
 - Triggers an update of your Kodi library after files have been processed.
