@@ -156,8 +156,8 @@ templates:
       main_file_only: yes
       include_subs: yes
       rename_like_files: yes
-      content_filename: "{{trakt_series_name|default(series_name)|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
-      path: "/{? folder.root ?}{? folder.downseries ?}{{trakt_series_name|default(series_name)|pathscrub}}/"
+      content_filename: "{{tvdb_series_name|default(series_name)|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
+      path: "/{? folder.root ?}{? folder.downseries ?}{{tvdb_series_name|default(series_name)|pathscrub}}/"
 
 ##### Transmission movies config#
   transmission-movies:
@@ -190,6 +190,7 @@ templates:
   series-metainfo:
     metainfo_series: yes
     thetvdb_lookup: yes
+    trakt_lookup: yes
 
 
 ##### Guessit parsing for some series tasks, not applied to all tasks because it causes issues with "name (year)" based series, like scandal#
@@ -247,8 +248,6 @@ tasks:
       type: shows
       strip_dates: yes
     accept_all: yes
-    set:
-      title: "{{tvdb_series_name|escape|replace('&#39;', '')}} {{series_id}}"
     list_add:
       - entry_list: trakt-series
 
@@ -261,7 +260,6 @@ tasks:
       list: "{? trakt.series ?}"
       context: watched
       position: next
-      strip_dates: yes
     accept_all: yes 
     set_series_begin: yes
 
@@ -472,10 +470,9 @@ tasks:
       retrieve: files
       regexp: '.*\.(avi|mkv|mp4)$'
     accept_all: yes
-    require_field: trakt_series_name
     move:
-      to: "/{? folder.root ?}{? folder.series ?}{{trakt_series_name|escape|replace('&#39;', '')|pathscrub}}/"
-      rename: "{{trakt_series_name|escape|replace('&#39;', '')|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
+      to: "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}}/S{{"%02d"|format(series_season)}}/"
+      rename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
       along:
         extensions:
           - srt
