@@ -17,12 +17,6 @@ _TVshows:_
 - Looks for your old series season packs and single episodes by discovering them on several websites.
 - Downloads if they match your requirements to prevent low quality files or language specific versions from being downloaded. 
 - Download regular HDTV quality to save space, this is an acceptable quality. If not found, accept 720p/1080p HD quality on the next run.
-- Save to /TVDB seriesname/seasonnumber/ folders so that 1) Kodi will recognise the correct tvshow and to make it easy to cleanup your drive (simply delete the season folders). 
-- Download the main file only, no other clutter that is usually present. 
-
-_Subtitles:_
-- Find subtitles when the download is finished.
-- Add downloaded files without subs to the subtitle queue, Flexget will continue searching subs even after the files have been moved/renamed to the proper location.
 
 _Movies:_
 - Cleanup (purge) your Trakt account by removing movies you already have from the Trakt watchlist.
@@ -30,14 +24,24 @@ _Movies:_
 - Looks for movies on your drive and removes them from your Trakt "watchlist". 
 - Looks for any manually downloaded .torrent file in your Downloads\tempmedia folder.
 - Looks for movies by discovering them on several websites. 
-- Downloads them but the main file only and only if there is a match with quality requirement: no prereleases or cinema recordings. Only Bluray rips. 
+- Quality: no prereleases or cinema recordings. Only Bluray rips in 1080p with a minimum filesize (8GB). But there are 2 fallbacks:
+- If 1080p with a certain minimum filesize is not available, it will fallback to 720p (also with a minimal filesize).  
+- If also not available, it will fallback to a lower minimum filesize treshold for 1080, then for 720p. Absolute minimum is 720p/850MB. For examply YTS.AG YIFY releases have quite acceptable quality. 
+
+_Subtitles:_
+- Find subtitles when the download is finished.
+- Add downloaded files without subs to the subtitle queue, Flexget will continue searching subs even after the files have been moved/renamed to the proper location.
 
 _Organising everything:_
-- Searches and downloads matching subtitles for all downloads.
-- Moves & renames files to organise them properly in your folders (Movies\movie name\..., TVshows\series name\...). The series/movies title, episode or year, quality. This allows you to easily search and find subtitles in the future using your TV remote during playblack in Kodi. Note that Flexget is much better at this task so chance is very slim you ever need to do this.
-- Keeps Transmission, which is used for downloading, clean. 
+- Purges Transmission, which is used for downloading. This will cleanup Transmission daily. 
+- Always downloads the main file only, no other files that are usually present. No more clutter! 
+- Moves & renames files and organises them properly:
+- TV shows are saved to a folder using the TVDB naming, this is what Kodi also uses to recognise your media. This will make sure Kodi will ALWAYS recognise your shows correctly. Example: TVshows\Tvdb-Series Name\S01 
+- All episodes are saved in season specific folders. This allows you to simply delete a season folder to free up space.  
+- Example for Movies: Movies\Movietitle (year)\...
+- Filenames will contain series or movies title, episode or year and quality release. 
 
-_And last, but not least: _
+_And last, but not least:_
 - Triggers an update of your Kodi library after files have been processed! They will appear in your Kodi library automatically!
 
 
