@@ -1,18 +1,24 @@
 variables: secrets.yml
 schedules:
-  - tasks: ['populate-*', 'clean-*']
-    schedule:
-      hour: 0
-  - tasks: ['fill-*', '*-rss']
-    schedule:
-      hour: '2-8/2'
-  - tasks: ['*-discover', '*-manual']
-    schedule:
-      hour: 2
-  - tasks: ['move-*', download-subtitles]
+##### Every 30 min: process downloaded files (find subs, move and rename) and watch folder for manually placed .torrent files.
+  - tasks: ['*-manual', 'find-*', 'move-*']
     schedule:
       minute: 15,45
-  - tasks: ['setbegin-*']
+##### Every hour: cleanup Transmission.
+  - tasks: ['clean-*']
+    schedule:
+      hour: 0
+##### Twice a day, during quiet times: scan existing files, fill queue, find latest episodes for series and get subs for items added to the subtitle queue.
+  - tasks: ['populate-*', 'fill-*', '*-rss', get-subtitles]
+    schedule:
+      hour: '2-6/2'
+##### Every other day: find older unwatched episodes (also check which episode to start looking for, Run this manually the first time!)
+  - tasks: ['nextep-*', '*-discover']
+    schedule:
+      day: "*/2"
+      hour: 7 
+##### Purge Trakt lists and the movie queue.
+  - tasks: ['purge-*']
     interval:
       weeks: 1
 
@@ -23,7 +29,6 @@ templates:
   series:
     thetvdb_lookup: yes
     tvmaze_lookup: yes
-    trakt_lookup: yes
     configure_series:
       from:
         entry_list: trakt-series
@@ -89,7 +94,6 @@ templates:
 
 
 ##### ADVANCED SETTINGS #####
-
 ##### Global config#
   global:
     no_entries_ok: yes
@@ -190,8 +194,6 @@ templates:
   series-metainfo:
     metainfo_series: yes
     thetvdb_lookup: yes
-    trakt_lookup: yes
-
 
 ##### Guessit parsing for some series tasks, not applied to all tasks because it causes issues with "name (year)" based series, like scandal#
   series-guessit:
@@ -206,13 +208,35 @@ templates:
     metainfo_movie: yes
 
 
-tasks:
 
+tasks:
 ########## SERIES ##########
+
+##### Remove ended or canceled series that have been watched from trakt list#
+  purge-series-list:
+    priority: 1
+    template:
+      - disable-seen-retry
+      - series-metainfo
+    trakt_lookup:
+      account: "{? trakt.account ?}"
+      username: "{? trakt.account ?}"    
+    trakt_list:
+      account: "{? trakt.account ?}"
+      list: "{? trakt.series ?}"
+      type: shows    
+    if:
+      - "tvdb_status == 'Ended' and trakt_watched": accept
+    list_remove:
+      - trakt_list:
+          account: "{? trakt.account ?}"
+          list: "{? trakt.series ?}"
+          type: shows
+
 
 ##### Populates the series database with the files on the library, to avoid duplicate downloads#
   populate-series-db:
-    priority: 1
+    priority: 2
     template:
       - series-metainfo
     seen: local
@@ -232,10 +256,9 @@ tasks:
         identified_by: ep
 
 
-
 ##### Fetch, format and output trakt series list to a custom entry list#
   fill-series-list:
-    priority: 2
+    priority: 3
     template:
       - disable-seen-retry
       - series-metainfo
@@ -246,28 +269,46 @@ tasks:
       account: "{? trakt.account ?}"
       list: "{? trakt.series ?}"
       type: shows
-      strip_dates: yes
     accept_all: yes
+    set:
+      title: "{{tvdb_series_name|escape|replace('&#39;', '')}}"
     list_add:
       - entry_list: trakt-series
 
 
-##### (First time run) Sync Flexget database with watched status in Trakt#  
-  setbegin-series-trakt:
+##### First run only (use ~/flexget/bin/flexget execute --now) Sync Flexget database with watched status in Trakt#  
+  nextep-series-list:
     priority: 4
+    template:
+      - disable-seen-retry
+      - series-metainfo
+    list_clear:
+      what:
+        - entry_list: trakt-series-begin
     next_trakt_episodes:
       account: "{? trakt.account ?}"
       list: "{? trakt.series ?}"
       context: watched
       position: next
-    accept_all: yes 
+    accept_all: yes
+    list_add:
+      - entry_list: trakt-series-begin
+      
+  nextep-series-set:
+    priority: 5
+    template:
+      - disable-seen-retry
+      - series-metainfo
+    entry_list: trakt-series-begin
+    accept_all: yes
+    set:
+      series_name: "{{tvdb_series_name|escape|replace('&#39;', '')}}"
     set_series_begin: yes
-
-
+    
 
 ##### Download episodes from manually downloaded torrents#
   download-series-manual:
-    priority: 5
+    priority: 6
     template:
       - disable-seen-retry
       - series-metainfo
@@ -284,7 +325,7 @@ tasks:
 
 ##### Download episodes from RSS feeds#
   download-series-rss:
-    priority: 6
+    priority: 7
     template:
       - series
       - reject
@@ -303,7 +344,7 @@ tasks:
 
 ##### Discover and download older episodes#
   download-series-discover:
-    priority: 7
+    priority: 8
     template:
       - series
       - reject
@@ -331,7 +372,7 @@ tasks:
 ########## MOVIES ##########
 
 ##### Remove manually downloaded movies from the movie queue and trakt list#
-  clean-movies-queue:
+  purge-movies-queue:
     priority: 11
     template:
       - disable-seen-retry
@@ -457,13 +498,66 @@ tasks:
 
 ########## LIBRARY ##########
 
-##### Move series from downloads folder to respective folders, along with existing subtitles and adding the files to the subtitle queue
-#require_field: series_name
-  move-series:
+##### The first attempt to find subtitles by searching for a match before renaming files.
+  find-subtitles-series:
     priority: 21
     template:
       - disable-seen-retry
+    filesystem:
+      path: "/{? folder.root ?}{? folder.downseries ?}"
+      recursive: yes
+      retrieve: files
+      regexp: '.*\.(avi|mkv|mp4)$'
+    accept_all: yes
+    seen: local
+    subliminal:
+      languages:
+        - eng
+      exact_match: yes
+      single: no
+      providers: [opensubtitles, addic7ed, tvsubtitles, podnapisi]
+      authentication:
+        opensubtitles:
+          username: "{? subtitles.user ?}"
+          password: "{? subtitles.pass ?}"
+        addic7ed:
+          username: "{? subtitles.user ?}"
+          password: "{? subtitles.pass ?}"
+
+##### The first attempt to find subtitles by searching for a match before renaming files.
+  find-subtitles-movies:
+    priority: 21
+    template:
+      - disable-seen-retry
+    filesystem:
+      path: "/{? folder.root ?}{? folder.downmovies ?}"
+      recursive: yes
+      retrieve: files
+      regexp: '.*\.(avi|mkv|mp4)$'
+    accept_all: yes
+    seen: local
+    subliminal:
+      languages:
+        - eng
+      exact_match: yes
+      single: no
+      providers: [opensubtitles, addic7ed, tvsubtitles, podnapisi]
+      authentication:
+        opensubtitles:
+          username: "{? subtitles.user ?}"
+          password: "{? subtitles.pass ?}"
+        addic7ed:
+          username: "{? subtitles.user ?}"
+          password: "{? subtitles.pass ?}"
+
+
+##### Move series from downloads folder to respective folders, along with existing subtitles and adding the files to the subtitle queue
+  move-series:
+    priority: 22
+    template:
+      - disable-seen-retry
       - series-metainfo
+    require_field: tvdb_series_name
     filesystem:
       path: "/{? folder.root ?}{? folder.downseries ?}"
       recursive: yes
@@ -471,8 +565,8 @@ tasks:
       regexp: '.*\.(avi|mkv|mp4)$'
     accept_all: yes
     move:
-      to: "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}}/S{{"%02d"|format(series_season)}}/"
-      rename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
+      to: "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}}/S{{series_season|pad(2)}}/"
+      rename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{series_id}} - {% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}"
       along:
         extensions:
           - srt
@@ -495,12 +589,9 @@ tasks:
         phase: find "/{? folder.root ?}{? folder.downseries ?}"* -type d -empty -delete
 
 
-
-
 ##### Move movies from downloads folder to the movies folder, along with possible subtitles and adding the files to the subtitle queue#
-
   move-movies:
-    priority: 22
+    priority: 23
     template:
       - disable-seen-retry
       - movies-metainfo
@@ -541,8 +632,8 @@ tasks:
 
 
 ##### Download subtitles for the previously queued files#
-  download-subtitles:
-    priority: 23
+  get-subtitles:
+    priority: 24
     template:
       - disable-seen-retry
     subtitle_list:
@@ -569,7 +660,6 @@ tasks:
 
 
 ########## CLEANUP ##########
-
   clean-transmission:
     priority: 31
     disable: details
@@ -577,20 +667,3 @@ tasks:
       <<: *transmission-settings
       finished_for: 1 day
 
-  clean-series-list:
-    priority: 53
-    delay: 8 day
-    template:
-      - disable-seen-retry
-      - series-metainfo
-    trakt_list:
-      account: "{? trakt.account ?}"
-      list: "{? trakt.series ?}"
-      type: shows
-    if:
-      - tvdb_status == 'Ended' and trakt_watched == 'True': accept
-    list_remove:
-      - trakt_list:
-          account: "{? trakt.account ?}"
-          list: "{? trakt.series ?}"
-          type: shows
