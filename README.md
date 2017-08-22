@@ -1,5 +1,5 @@
 INTRO:
-To get a "Netflix-like" experience, please use AUTOSETUP.SH to install and configure the required tools. It will include this config.yml for Flexget. 
+To get a "Netflix-like" experience, please use [url=https://github.com/zilexa/autosetup]AUTOSETUP.SH[/url] to install and configure the required tools. It will include this config.yml for Flexget. 
 
 NOTE:
 This Flexget config is fully based on Jonybat's config.yml. See the CHANGELOG for a full list of changes made to his config.yml. 
