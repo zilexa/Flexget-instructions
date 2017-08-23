@@ -40,6 +40,7 @@ templates:
         propers: 48 hours
         specials: no
         season_packs: 3
+        tracking: backfill
     content_size:
       min: 100
     content_filter:
@@ -359,7 +360,8 @@ tasks:
       interval: 15 minutes
       what:
         - next_series_seasons: yes
-        - next_series_episodes: yes
+        - next_series_episodes: 
+            backfill: yes
       from:
         - piratebay:
             category: highres tv
