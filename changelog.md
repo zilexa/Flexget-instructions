@@ -1,8 +1,13 @@
 This config is fully based on jonybat's flexget config. Below are all the changes I have made to his config to do everything I believe is necessary for the ultimate Netflix-like experience.
 
+Note: this changelog is not complete but does give an idea of the changes I made to Jonybat's config. 
 
 BUG:
-- Next_trakt_episodes sets the starting episode correct for most series except some like Scandal (US), House of Cards (US), The Librarians (2014), Mistresses (US). This cannot be fixed easily, since "strip_dates" is required to support all other series. Spend 3 days couldn't solve it.
+- none.
+
+added:
+- fully based on tvdb naming scheme so that Kodi will always recognise everything.
+- added task to cleanup Trakt tvshows list first. If you have fully watched a tv show AND no new seasons will follow (show has ended), it will be removed from your trakt list. This seemed like an obvious thing to add since the Movies task also cleans up your movies list. 
 
 Removed: 
 - everything anime related
