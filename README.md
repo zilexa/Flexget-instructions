@@ -24,9 +24,9 @@ _Movies:_
 - Looks for movies on your drive and removes them from your Trakt "watchlist". 
 - Looks for any manually downloaded .torrent file in your Downloads\tempmedia folder.
 - Looks for movies by discovering them on several websites. 
-- Quality: no prereleases or cinema recordings. Only Bluray rips in 1080p with a minimum filesize (8GB). But there are 2 fallbacks:
-- If 1080p with a certain minimum filesize is not available, it will fallback to 720p (also with a minimal filesize).  
-- If also not available, it will fallback to a lower minimum filesize treshold for 1080, then for 720p. Absolute minimum is 720p/850MB. For examply YTS.AG YIFY releases have quite acceptable quality. 
+- Quality: no prereleases or cinema recordings. Only Bluray rips in 1080p with a minimum filesize. But there are 2 fallbacks:
+- If 1080p with a certain minimum filesize is not available, it will fallback to a lower minimal filesize.  
+- If also not available, it will fallback to 720p with a minimum filesize treshold for 720p. 
 
 _Subtitles:_
 - Find subtitles when the download is finished.
@@ -36,7 +36,7 @@ _Organising everything:_
 - Purges Transmission, which is used for downloading. This will cleanup Transmission daily. 
 - Always downloads the main file only, no other files that are usually present. No more clutter! 
 - Moves & renames files and organises them properly:
-- TV shows are saved to a folder using the TVDB naming, this is what Kodi also uses to recognise your media. This will make sure Kodi will ALWAYS recognise your shows correctly. Example: TVshows\Tvdb-Series Name\S01 
+- TV shows are saved to a folder using the TVDB naming, this is what Kodi also uses to recognise your media. This will make sure Kodi will ALWAYS recognise your shows correctly. Example: TVshows\Tvdb-Series Name\S01\Tvdb-Series-Name - epid - episode title [quality].ext
 - All episodes are saved in season specific folders. This allows you to simply delete a season folder to free up space.  
 - Example for Movies: Movies\Movietitle (year)\...
 - Filenames will contain series or movies title, episode or year and quality release. 
