@@ -1,9 +1,28 @@
 This config is fully based on jonybat's flexget config. Below are all the changes I have made to his config to do everything I believe is necessary for the ultimate Netflix-like experience.
 
-Note: this changelog is not complete but does give an idea of the changes I made to Jonybat's config. 
+#################
+##    TODO     ##
+#################
+The config works perfectly after the latest update of 20171109. However I do want to do 2 more things:
+- Optimize the part that searches for Season packs.
+- Remove log_filter.py if that plugin is no longer supported by the latest version of Flexget (2.10.106, November 2017).
 
-BUG:
-- none.
+#################
+##  CHANGELOG  ##
+#################
+20171109
+ALL issues have now been solved. Most of them were minor. The biggest changes:
+-Solved issues with failing subtitle lookup. 
+- Some episodes don't have correct SxxEyy naming (like S11E03) but look like this: 1103 or even worse: 903 (meaning S09E03).
+The config has been adjusted to solve this issue.
+- Movies will now first search for 8-25GB 1080p Bluray rips, if not found, 2GB-7.999GB 1080p Bluray rip, if not found, 0.9GB-8GB 720P Bluray rip. 
+
+
+
+###################################################
+##  CHANGES TO THE ORIGINAL CONFIG FROM JONYBAT  ##
+###################################################
+FYI this is not a complete overview.
 
 added:
 - fully based on tvdb naming scheme so that Kodi will always recognise everything.
