@@ -95,6 +95,8 @@ templates:
         - \bger(man)?\b
         - \bcastellano\b
         - \brus(sian)?\b
+        - \btamil\b
+        - \bhindi\b
     content_filter:
       reject:
         - '*.rar'
@@ -215,6 +217,29 @@ templates:
       movie: guessit
     metainfo_movie: yes
 
+
+##### Move and rename series, add them to Kodi library and the subtitle queue#
+  move-series:
+    move:
+      to: "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}}/S{{series_season|pad(2)}}/"
+      rename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{series_id}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}"
+      along:
+        extensions:
+          - srt
+          - sub
+        subdirs:
+          - Subs
+      clean_source: 50
+    kodi_library:
+      action: scan
+      category: video
+      url: http://localhost
+      port: 8080
+    list_add:
+      - subtitle_list:
+          list: subtitles
+          path: "{{location}}"
+          remove_after: 7 days
 
 
 tasks:
@@ -433,7 +458,7 @@ tasks:
           type: movies
 
 
-##### Discover and download 1080p movies with good bitrate#
+##### Discover and download 1080p movies with good bitrate (min. 8GB)#
   download-movies-HQ-discover:
     priority: 14
     template:
@@ -467,7 +492,7 @@ tasks:
           type: movies
 
 
-##### Discover and download NQ movies (fullHD with acceptable bitrate), if the movie is not recent#
+##### Discover and download NQ movies (fullHD min 2GB), if the movie is not recent#
   download-movies-NQ-discover:
     priority: 15
     template:
@@ -503,7 +528,7 @@ tasks:
           type: movies
 
 
-##### Discover and download lower quality/bitrate movies, if the movie is not recent#
+##### Discover and download lower quality/bitrate movies (1-8GB 720p), if the movie is not recent#
   download-movies-LQ-discover:
     priority: 16
     template:
@@ -539,7 +564,7 @@ tasks:
           type: movies
 
 
-########## LIBRARY ##########
+########## SUBTITLES (attempt 1/2) ##########
 
 ##### The first attempt to find subtitles by searching for a match before renaming files.
   find-subtitles-series:
@@ -566,6 +591,7 @@ tasks:
         addic7ed:
           username: "{? subtitles.user ?}"
           password: "{? subtitles.pass ?}"
+
 
 ##### The first attempt to find subtitles by searching for a match before renaming files.
   find-subtitles-movies:
@@ -594,49 +620,99 @@ tasks:
           password: "{? subtitles.pass ?}"
 
 
+##########      LIBRARY     ##########
 
-
-##### Move series from downloads folder to respective folders, along with existing subtitles and adding the files to the subtitle queue
-  move-series:
+##### First add the downloaded series a list, this allows us to solve issues with files that have incorrect filenames. 
+  move-series-list:
     priority: 23
     template:
       - disable-seen-retry
       - series-metainfo
-    require_field: tvdb_series_name
+    list_clear:
+      what:
+        - entry_list: downloaded-series
     filesystem:
       path: "/{? folder.root ?}{? folder.downseries ?}"
       recursive: yes
       retrieve: files
       regexp: '.*\.(avi|mkv|mp4)$'
     accept_all: yes
-    move:
-      to: "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}}/S{{series_season|pad(2)}}/"
-      rename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{series_id}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}"
-      along:
-        extensions:
-          - srt
-          - sub
-        subdirs:
-          - Subs
-      clean_source: 50
-    kodi_library:
-      action: scan
-      category: video
-      url: http://localhost
-      port: 8080
     list_add:
-      - subtitle_list:
-          list: subtitles
-          path: "{{location}}"
-          remove_after: 7 days
+      - entry_list: downloaded-series
+   
+    
+##### Now move series from downloads folder to respective folders, along with existing subtitles and adding the files to the subtitle queue    
+  move-series:
+    priority: 24
+    template:
+      - disable-seen-retry
+      - series-metainfo
+      - move-series
+    list_match:
+      from:
+        - entry_list: downloaded-series
+      single_match: no
+    accept_all: yes    
+    require_field: tvdb_series_name
     exec:
       on_exit:
         phase: find "/{? folder.root ?}{? folder.downseries ?}"* -type d -empty -delete
 
 
+##### Fix the leftovers: Move series with incoreect epid numbering were rejected by the move-series task due to incorrect filename (SSEE instead of SxxEyy).  
+  move-series-SSEE:
+    priority: 25
+    template:
+      - disable-seen-retry
+      - series-metainfo
+      - move-series
+    list_match:
+      from:
+        - entry_list: downloaded-series
+      single_match: no
+    accept_all: yes  
+    manipulate:
+      - title:
+          replace:
+            regexp: '([01]\d)([0-2]\d)'
+            format: 'S\1E\2'
+      - filename:
+          from: title
+    require_field: tvdb_series_name
+    exec:
+      on_exit:
+        phase: find "/{? folder.root ?}{? folder.downseries ?}"* -type d -empty -delete
+
+
+##### Fix the leftovers: downloaded series that were rejected by the move-series task due to incorrect filename (SEE instead of SxxEyy), will get a title fix and should get moved on next run.  
+  move-series-SEE:
+    priority: 26
+    template:
+      - disable-seen-retry
+      - series-metainfo
+      - move-series
+    list_match:
+      from:
+        - entry_list: downloaded-series
+      single_match: no
+    accept_all: yes  
+    manipulate:
+      - title:
+          replace:
+            regexp: '([1-9])([0-2]\d)'
+            format: 'S\1E\2'
+      - filename:
+          from: title
+    require_field: tvdb_series_name
+    exec:
+      on_exit:
+        phase: find "/{? folder.root ?}{? folder.downseries ?}"* -type d -empty -delete
+
+
+
 ##### Move movies from downloads folder to the movies folder, along with possible subtitles and adding the files to the subtitle queue#
   move-movies:
-    priority: 24
+    priority: 30
     template:
       - disable-seen-retry
       - movies-metainfo
@@ -676,10 +752,11 @@ tasks:
         phase: find "/{? folder.root ?}{? folder.downmovies ?}"* -type d -empty -delete
 
 
+########## SUBTITLES (attempt 2/2) ##########
 
 ##### Download subtitles for the previously queued files#
   get-subtitles:
-    priority: 25
+    priority: 40
     template:
       - disable-seen-retry
     subtitle_list:
@@ -704,11 +781,12 @@ tasks:
           password: "{? subtitles.pass ?}"
 
 
-
 ########## CLEANUP ##########
+
   clean-transmission:
-    priority: 31
+    priority: 50
     disable: details
     clean_transmission:
       <<: *transmission-settings
       finished_for: 1 day
+
