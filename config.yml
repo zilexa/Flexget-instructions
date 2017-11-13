@@ -518,8 +518,6 @@ tasks:
             category: highres movies
         - limetorrents:
             category: movies
-    if:
-      - tmdb_year > now.year - 1: reject
     list_match:
       from:
         - movie_list: trakt-movies
@@ -555,8 +553,6 @@ tasks:
             category: highres movies
         - limetorrents:
             category: movies
-    if:
-      - tmdb_year > now.year - 1: reject
     list_match:
       from:
         - movie_list: trakt-movies
