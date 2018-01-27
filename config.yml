@@ -13,7 +13,7 @@ schedules:
     schedule:
       hour: '2-6/2'
 ##### Every other day: find older unwatched episodes (also check which episode to start looking for, Run this manually the first time!)
-  - tasks: ['nextep-*', '*-discover']
+  - tasks: ['*-nextep', '*-discover']
     schedule:
       day: "*/2"
       hour: 7 
@@ -169,8 +169,8 @@ templates:
       <<: *transmission-settings
       main_file_only: yes
       include_subs: yes
-#      rename_like_files: yes
-#      content_filename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{series_id}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}"
+      rename_like_files: yes
+      content_filename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{series_id}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}"
       path: "/{? folder.root ?}{? folder.downseries ?}{{tvdb_series_name|default(series_name)|pathscrub}}/"
 
 ##### Transmission movies config#
@@ -179,8 +179,8 @@ templates:
       <<: *transmission-settings
       main_file_only: yes
       include_subs: yes
-#      rename_like_files: yes
-#      content_filename: "{{tmdb_name|pathscrub}} ({{tmdb_year}}){% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
+      rename_like_files: yes
+      content_filename: "{{tmdb_name|pathscrub}} ({{tmdb_year}}){% if quality|default(False) %} - [{{quality}}]{% endif %}{% if release_group|default(False) %} - [{{release_group}}]{% endif %}"
       path: "/{? folder.root ?}{? folder.downmovies ?}{{movie_name|pathscrub}}"
 
 ##### Pushbullet config#
@@ -218,33 +218,32 @@ templates:
     metainfo_movie: yes
 
 
-##### Move and rename series, add them to Kodi library and the subtitle queue#
-  move-series:
-    move:
-      to: "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}}/S{{series_season|pad(2)}}/"
-      rename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{series_id}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}"
-      along:
-        extensions:
-          - srt
-          - sub
-        subdirs:
-          - Subs
-      clean_source: 50
-    kodi_library:
-      action: scan
-      category: video
-      url: http://localhost
-      port: 8080
-    list_add:
-      - subtitle_list:
-          list: subtitles
-          path: "{{location}}"
-          remove_after: 7 days
+##### Move template, only necessary if you rename files AFTER they are downloaded. 
+#  move-series:
+#    move:
+#      to: "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}}/S{{series_season|pad(2)}}/"
+#      rename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{series_id}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}"
+#      along:
+#        extensions:
+#          - srt
+#          - sub
+#        subdirs:
+#          - Subs
+#      clean_source: 50
+#    kodi_library:
+#      action: scan
+#      category: video
+#      url: http://localhost
+#      port: 8080
+#    list_add:
+#      - subtitle_list:
+#          list: subtitles
+#          path: "{{location}}"
+#          remove_after: 7 days
 
 
 tasks:
 ########## SERIES ##########
-
 ##### Remove ended or canceled series that have been watched from trakt list#
   purge-series-list:
     priority: 1
@@ -266,7 +265,7 @@ tasks:
           list: "{? trakt.series ?}"
           type: shows
 
-
+# SCAN DATABASE 
 ##### Populates the series database with the files on the library, to avoid duplicate downloads#
   populate-series-db:
     priority: 2
@@ -289,29 +288,10 @@ tasks:
         identified_by: ep
 
 
-##### Fetch, format and output trakt series list to a custom entry list#
-  fill-series-list:
-    priority: 3
-    template:
-      - disable-seen-retry
-      - series-metainfo
-    list_clear:
-      what:
-        - entry_list: trakt-series
-    trakt_list:
-      account: "{? trakt.account ?}"
-      list: "{? trakt.series ?}"
-      type: shows
-    accept_all: yes
-    set:
-      title: "{{tvdb_series_name|escape|replace('&#39;', '')}}"
-    list_add:
-      - entry_list: trakt-series
-
-
+# SYNC WITH TRAKT
 ##### First run only (use ~/flexget/bin/flexget execute --now) Sync Flexget database with watched status in Trakt#  
-  nextep-series-list:
-    priority: 4
+  get-series-nextep:
+    priority: 3
     template:
       - disable-seen-retry
       - series-metainfo
@@ -327,8 +307,8 @@ tasks:
     list_add:
       - entry_list: trakt-series-begin
       
-  nextep-series-set:
-    priority: 5
+  set-series-nextep:
+    priority: 4
     template:
       - disable-seen-retry
       - series-metainfo
@@ -337,8 +317,30 @@ tasks:
     set:
       series_name: "{{tvdb_series_name|escape|replace('&#39;', '')}}"
     set_series_begin: yes
-    
+ 
+ 
+ 
+ ##### Fetch, format and output trakt series list to a custom entry list#
+  fill-series-list:
+    priority: 5
+    template:
+      - disable-seen-retry
+      - series-metainfo
+    list_clear:
+      what:
+        - entry_list: trakt-series
+    trakt_list:
+      account: "{? trakt.account ?}"
+      list: "{? trakt.series ?}"
+      type: shows
+    accept_all: yes
+    set:
+      title: "{{tvdb_series_name|escape|replace('&#39;', '')}}"
+    list_add:
+      - entry_list: trakt-series   
 
+
+# GET SERIES
 ##### Download episodes from manually downloaded torrents#
   download-series-manual:
     priority: 6
@@ -365,7 +367,7 @@ tasks:
       - torrents
       - transmission-series
     inputs:
-      - rss: http://showrss.info/other/all.rss      
+      - rss: http://showrss.info/user/1450.rss?magnets=true&namespaces=false&name=null&quality=any&re=yes
       - rss: https://eztv.ag/ezrss.xml
       - rss: https://rarbg.to/rssdd.php?category=1;18;41;49
       - rss: 
@@ -374,9 +376,39 @@ tasks:
       - rss: https://www.limetorrents.cc/rss/20/
 
 
+##### Discover and download season packs#
+  download-seasons-discover:
+    priority: 8
+    template:
+      - series
+      - reject
+      - torrents
+      - transmission-series
+      - series-metainfo
+    #season lookup not supported by thetvdb
+    thetvdb_lookup: no
+    magnets: yes
+    convert_magnet:
+      timeout: 120 seconds
+      force: yes
+    discover:
+      release_estimations: strict
+      interval: 15 minutes
+      what:
+        - next_series_seasons:
+            from_start: yes
+      from:
+        - piratebay:
+            category: highres tv
+        - limetorrents:
+            category: tv
+        - rarbg:
+            category: [1, 18, 41, 49]
+
+
 ##### Discover and download older episodes#
   download-series-discover:
-    priority: 8
+    priority: 9
     template:
       - series
       - reject
@@ -386,11 +418,11 @@ tasks:
     magnets: yes
     convert_magnet:
       timeout: 120 seconds
+      force: yes
     discover:
       release_estimations: strict
       interval: 15 minutes
       what:
-        - next_series_seasons: yes
         - next_series_episodes: yes
       from:
         - piratebay:
@@ -472,6 +504,7 @@ tasks:
     magnets: yes
     convert_magnet:
       timeout: 120 seconds
+      force: yes
     seen: local
     discover:
       release_estimations: loose
@@ -507,6 +540,7 @@ tasks:
     magnets: yes
     convert_magnet:
       timeout: 120 seconds
+      force: yes
     seen: local
     discover:
       release_estimations: loose
@@ -542,6 +576,7 @@ tasks:
     magnets: yes
     convert_magnet:
       timeout: 120 seconds
+      force: yes
     seen: local
     discover:
       release_estimations: loose
@@ -620,98 +655,125 @@ tasks:
 
 
 ##########      LIBRARY     ##########
-
-##### First add the downloaded series a list, this allows us to solve issues with files that have incorrect filenames. 
-  move-series-list:
-    priority: 23
+  move-series:
+    priority: 31
     template:
       - disable-seen-retry
       - series-metainfo
-    list_clear:
-      what:
-        - entry_list: downloaded-series
+      - series-guessit
     filesystem:
       path: "/{? folder.root ?}{? folder.downseries ?}"
       recursive: yes
       retrieve: files
       regexp: '.*\.(avi|mkv|mp4)$'
     accept_all: yes
+    move:
+      to: "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}}/S{{series_season|pad(2)}}/"
+      rename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{series_id}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}"
+      along:
+        extensions:
+          - srt
+          - sub
+        subdirs:
+          - Subs
+      clean_source: 50
+    kodi_library:
+      action: scan
+      category: video
+      url: http://192.168.1.1
+      port: 8080
     list_add:
-      - entry_list: downloaded-series
+      - subtitle_list:
+          list: subtitles
+          path: "{{location}}"
+          remove_after: 7 days
+    exec:
+      on_exit:
+        phase: find "/{? folder.root ?}{? folder.downseries ?}"* -type d -empty -delete
+
+
+
+##### First add the downloaded series a list, this allows us to solve issues with files that have incorrect filenames. 
+#  move-series-list:
+#    priority: 32
+#    template:
+#      - disable-seen-retry
+#      - series-metainfo
+#    list_clear:
+#      what:
+#        - entry_list: downloaded-series
+#    filesystem:
+#      path: "/{? folder.root ?}{? folder.downseries ?}"
+#      recursive: yes
+#      retrieve: files
+#      regexp: '.*\.(avi|mkv|mp4)$'
+#    accept_all: yes
+#    list_add:
+#      - entry_list: downloaded-series
    
     
 ##### Now move series from downloads folder to respective folders, along with existing subtitles and adding the files to the subtitle queue    
-  move-series:
-    priority: 24
-    template:
-      - disable-seen-retry
-      - series-metainfo
-      - move-series
-    list_match:
-      from:
-        - entry_list: downloaded-series
-      single_match: no
-    accept_all: yes    
-    require_field: tvdb_series_name
-    exec:
-      on_exit:
-        phase: find "/{? folder.root ?}{? folder.downseries ?}"* -type d -empty -delete
+#  move-series-SxxEyy:
+#    priority: 33
+#    template:
+#      - disable-seen-retry
+#      - series-metainfo
+#      - move-series
+#    entry_list: downloaded-series
+#    accept_all: yes    
+#    require_field: tvdb_series_name
+#    exec:
+#      on_exit:
+#        phase: find "/{? folder.root ?}{? folder.downseries ?}"* -type d -empty -delete
 
 
 ##### Fix the leftovers: Move series with incoreect epid numbering were rejected by the move-series task due to incorrect filename (SSEE instead of SxxEyy).  
-  move-series-SSEE:
-    priority: 25
-    template:
-      - disable-seen-retry
-      - series-metainfo
-      - move-series
-    list_match:
-      from:
-        - entry_list: downloaded-series
-      single_match: no
-    accept_all: yes  
-    manipulate:
-      - title:
-          replace:
-            regexp: '([01]\d)([0-2]\d)'
-            format: 'S\1E\2'
-      - filename:
-          from: title
-    require_field: tvdb_series_name
-    exec:
-      on_exit:
-        phase: find "/{? folder.root ?}{? folder.downseries ?}"* -type d -empty -delete
+#  move-series-SSEE:
+#    priority: 34
+#    template:
+#      - disable-seen-retry
+#      - series-metainfo
+#      - move-series
+#    entry_list: downloaded-series
+#    accept_all: yes  
+#    manipulate:
+#      - title:
+#          replace:
+#            regexp: '([01]\d)([0-2]\d)'
+#            format: 'S\1E\2'
+#      - filename:
+#          from: title
+#    require_field: tvdb_series_name
+#    exec:
+#      on_exit:
+#        phase: find "/{? folder.root ?}{? folder.downseries ?}"* -type d -empty -delete
 
 
 ##### Fix the leftovers: downloaded series that were rejected by the move-series task due to incorrect filename (SEE instead of SxxEyy), will get a title fix and should get moved on next run.  
-  move-series-SEE:
-    priority: 26
-    template:
-      - disable-seen-retry
-      - series-metainfo
-      - move-series
-    list_match:
-      from:
-        - entry_list: downloaded-series
-      single_match: no
-    accept_all: yes  
-    manipulate:
-      - title:
-          replace:
-            regexp: '([1-9])([0-2]\d)'
-            format: 'S\1E\2'
-      - filename:
-          from: title
-    require_field: tvdb_series_name
-    exec:
-      on_exit:
-        phase: find "/{? folder.root ?}{? folder.downseries ?}"* -type d -empty -delete
-
+#  move-series-SEE:
+#    priority: 35
+#    template:
+#      - disable-seen-retry
+#      - series-metainfo
+#      - move-series
+#    entry_list: downloaded-series
+#    accept_all: yes  
+#    manipulate:
+#      - title:
+#          replace:
+#            regexp: '([1-9])([0-2]\d)'
+#            format: 'S\1E\2'
+#      - filename:
+#          from: title
+#    require_field: tvdb_series_name
+#    exec:
+#      on_exit:
+#        phase: find "/{? folder.root ?}{? folder.downseries ?}"* -type d -empty -delete
 
 
 ##### Move movies from downloads folder to the movies folder, along with possible subtitles and adding the files to the subtitle queue#
   move-movies:
-    priority: 30
+    priority: 36
     template:
       - disable-seen-retry
       - movies-metainfo
@@ -739,7 +801,7 @@ tasks:
     kodi_library:
       action: scan
       category: video
-      url: http://localhost
+      url: http://192.168.1.1
       port: 8080
     list_add:
       - subtitle_list:
@@ -783,9 +845,29 @@ tasks:
 ########## CLEANUP ##########
 
   clean-transmission:
-    priority: 50
+    priority: 51
     disable: details
     clean_transmission:
       <<: *transmission-settings
       finished_for: 1 day
 
+  purge-old-seasons:
+    priority: 52
+    template:
+      - disable-seen-retry
+      - series-metainfo
+    entry_list: trakt-series-begin
+    accept_all: yes
+    if:
+      - series_season == 1 or series_episode == 1: reject
+      - series_season > 1:
+          set:
+            to_remove: "S{{(series_season-1)|pad(2)}}"
+    exec:
+      on_output:
+        for_accepted: find "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')}}" -type d -name "{{to_remove}}" -exec rm -r'{}' \;
+    kodi_library:
+      action: clean
+      category: video
+      url: http://192.168.1.1
+      port: 8080    
