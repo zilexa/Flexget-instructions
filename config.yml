@@ -865,7 +865,7 @@ tasks:
             to_remove: "S{{(series_season-1)|pad(2)}}"
     exec:
       on_output:
-        for_accepted: find "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')}}" -type d -name "{{to_remove}}" -exec rm -r'{}' \;
+        for_accepted: find "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')}}" -type d -name "{{to_remove}}" -exec rm -r '{}' \;
     kodi_library:
       action: clean
       category: video
