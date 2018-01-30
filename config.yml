@@ -25,7 +25,7 @@ schedules:
 
 templates:
 
-##### Series config#
+##### Series config# Please uncomment `tracking: backfill` if you need Flexget to download as much as old episodes as it can find. Do the same in series-discover-episodes and series-discover-seasons tasks
   series:
     thetvdb_lookup: yes
     tvmaze_lookup: yes
@@ -35,11 +35,12 @@ templates:
       settings:
         identified_by: ep
         timeframe: 1 hours
-        target: webrip+ <720p !10bit !h265
-        quality: webrip+ <=720p !10bit !h265
+        target: webrip+ 720p !10bit h265
+        quality: webrip+ <=720p !10bit xvid+
         propers: 48 hours
         specials: no
         season_packs: 3
+#        tracking: backfill
     content_size:
       min: 100
     content_filter:
@@ -97,6 +98,7 @@ templates:
         - \brus(sian)?\b
         - \btamil\b
         - \bhindi\b
+        - \bsva\b
     content_filter:
       reject:
         - '*.rar'
@@ -162,6 +164,11 @@ templates:
       torlock.eu: 1 seconds
       torrenticity.com: 1 seconds
       zooqle.com: 2 seconds
+    urlrewrite:
+      torrentz2:
+        regexp: 'http://torrentz2.eu/(?P<id>\w*)'
+        format: 'magnet:?xt=urn:btih:\g<id>&dn=&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce'
+
 
 ##### Transmission series config#
   transmission-series:
@@ -222,7 +229,7 @@ templates:
 #  move-series:
 #    move:
 #      to: "/{? folder.root ?}{? folder.series ?}{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}}/S{{series_season|pad(2)}}/"
-#      rename: "{{tvdb_series_name|escape|replace('&#39;', '')|pathscrub}} - {{series_id}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}"
+#      rename: "{{tvdb_series_name|default(series_name)}} - {{tvdb_ep_id|default(series_id)}}{% if tvdb_ep_name|default(False) %} - {{tvdb_ep_name|pathscrub}}{% endif %}{% if quality|default(False) %} - [{{quality}}]{% endif %}"
 #      along:
 #        extensions:
 #          - srt
@@ -375,8 +382,9 @@ tasks:
           title: 'torrent:fileName'
       - rss: https://www.limetorrents.cc/rss/20/
 
+      
 
-##### Discover and download season packs#
+##### Discover and download season packs# Please uncomment `backfill` if you need Flexget to download as much as old episodes as it can find. Do the same in series-discover-seasons task and series template.
   download-seasons-discover:
     priority: 8
     template:
@@ -395,8 +403,8 @@ tasks:
       release_estimations: strict
       interval: 15 minutes
       what:
-        - next_series_seasons:
-            from_start: yes
+        - next_series_seasons: yes
+#            backfill: yes
       from:
         - piratebay:
             category: highres tv
@@ -404,9 +412,10 @@ tasks:
             category: tv
         - rarbg:
             category: [1, 18, 41, 49]
+        - search_rss: https://torrentz2.eu/feed?f=\{{search_term}}
 
 
-##### Discover and download older episodes#
+##### Discover and download older episodes# Please uncomment `tracking: backfill` if you need Flexget to download as much as old episodes as it can find. Do the same in series-discover-seasons task and series template.
   download-series-discover:
     priority: 9
     template:
@@ -424,6 +433,7 @@ tasks:
       interval: 15 minutes
       what:
         - next_series_episodes: yes
+#            backfill: yes
       from:
         - piratebay:
             category: highres tv
@@ -431,7 +441,7 @@ tasks:
             category: tv
         - rarbg:
             category: [1, 18, 41, 49]
-
+        - search_rss: https://torrentz2.eu/feed?f=\{{search_term}}
 
 ########## MOVIES ##########
 
