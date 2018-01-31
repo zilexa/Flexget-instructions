@@ -114,35 +114,35 @@ templates:
       path: "/{? folder.root ?}"
       space: 5000
     # Requires log_filter plugin
-#    log_filter:
-#      task:
-#        - marked seen
-#        - because quality already downloaded
-#        - because episode has already been downloaded
-#        - Task does not have any
-#      move:
-#        - left because it exceeds safety value
-#        - does not exists (anymore)
-#      urlrewriter:
-#        - URL rewritten to
-#      enzyme.mkv:
-#        - Reading
-#        - Processing
-#      enzyme.parsers.ebml.core:
-#        - ignored
-#        - Maximum level
-#      subliminal.video:
-#        - Scanning video
-#      parser_internal:
-#        - appears to be an episode pack
-#      content_size:
-#        - rejecting
-#      search_rss:
-#        - Error
-#      assume_quality:
-#        - ""
-#      utils.requests:
-#        - Waiting
+    log_filter:
+      task:
+        - marked seen
+        - because quality already downloaded
+        - because episode has already been downloaded
+        - Task does not have any
+      move:
+        - left because it exceeds safety value
+        - does not exists (anymore)
+      urlrewriter:
+        - URL rewritten to
+      enzyme.mkv:
+        - Reading
+        - Processing
+      enzyme.parsers.ebml.core:
+        - ignored
+        - Maximum level
+      subliminal.video:
+        - Scanning video
+      parser_internal:
+        - appears to be an episode pack
+      content_size:
+        - rejecting
+      search_rss:
+        - Error
+      assume_quality:
+        - ""
+      utils.requests:
+        - Waiting
 
 ##### Common torrents config#
   torrents:
