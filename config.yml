@@ -98,7 +98,6 @@ templates:
         - \brus(sian)?\b
         - \btamil\b
         - \bhindi\b
-        - \bsva\b
     content_filter:
       reject:
         - '*.rar'
