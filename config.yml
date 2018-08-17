@@ -349,7 +349,7 @@ tasks:
       - torrents
       - transmission-series
     inputs:
-      - rss: http://showrss.info/user/1450.rss?magnets=true&namespaces=true&name=null&quality=anyhd&re=yes
+      - rss: http://showrss.info/user/USERIDNUMBER.rss?magnets=true&namespaces=true&name=null&quality=anyhd&re=yes
 #      - rss: https://eztv.ag/ezrss.xml
 #      - rss: https://rarbg.to/rssdd.php?category=1;18;41;49
 #      - rss: 
