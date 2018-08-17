@@ -14,8 +14,6 @@ _TVshows:_
 - Looks for your old series season packs and single episodes by discovering them on several websites.
 - Downloads if they match your requirements to prevent low quality files or language specific versions from being downloaded. 
 - Download 720p HD quality, if not found, accept 1080p HD quality on the second run.
-- Cleanup (purge) your Trakt account by removing fully watched series that have ended (or are cancelled) 
-- Delete whole seasons from your harddrive after you have started watching the next season or you have watched all seasons and the series has ended. 
 
 _Movies:_
 - Gets the movies you would like to see from your Trakt "watchlist".
@@ -25,7 +23,6 @@ _Movies:_
 - Quality: no prereleases or cinema recordings. Only Bluray rips in 1080p with a minimum filesize. But there are 2 fallbacks:
 - If 1080p with a certain minimum filesize is not available, it will fallback to a lower minimal filesize.  
 - If also not available, it will fallback to 720p with a minimum filesize treshold for 720p. 
-- Cleanup (purge) your Trakt account by removing movies you already have from the Trakt watchlist.
 
 _Subtitles:_
 - Find subtitles when the download is finished using the original filename. 
@@ -41,7 +38,9 @@ _Organising everything:_
 
 _And last, but not least:_
 - Triggers an update of your Kodi library after files have been processed! They will appear in your Kodi library automatically. 
-
+- Cleanup (purge) your Trakt account by removing fully watched series that have ended (or are cancelled) 
+- Delete old seasons from your harddrive after you have started watching the next season
+- Delete tv shows from your harddrive after you have watched all seasons and the series has ended. 
 
 **Installation of software**
 1. The first basic requirement: an RPi2 or RPi3 or (recommended) Vero 4K. Go to https://osmc.tv and order one. Install and OSMC. With your TV remote go to MyOSMC, App Store and install Transmission (recommended: also go to Services and enable SAMBA server). 
