@@ -1,24 +1,21 @@
 variables: secrets.yml
 schedules:
-##### Every 30 min: process downloaded files (find subs, move and rename) and watch folder for manually placed .torrent files.
+##### YOUR TORRENT CLIENT SHOULD RUN THIS COMMAND AFTER EVERY DOWNLOAD: PATH_TO_flexget/bin/flexget execute --tasks find-* move-*
+##### OPTIONALLY I run it once a day, you can set a much higher interval if the above is not possible:
   - tasks: ['*-manual', 'find-*', 'move-*']
     schedule:
-      minute: 15,45
-##### Every hour: cleanup Transmission.
+      hour: 10
+##### 
+##### Every day at 2AM, check nextep to search (necessary if you added a new show to the list but have already watched it partly) and find subtitles attempt #2 (without original name). 
+  - tasks: ['*-nextep', get-subtitles]
+    schedule:
+      hour:  2
+##### Twice a day between 2AM and 7AM: scan existing files, fill queue, check the feeds for latest episodes, discover missing episodes.
+  - tasks: ['purge-*', 'populate-*', 'fill-*', '*-rss', '*-discover']
+    schedule:
+      hour: '2-7/2'
+##### Weekly cleanup of Transmission, Trakt TVshows list (fully watched && ended = delete from list) and harddrive.
   - tasks: ['clean-*']
-    schedule:
-      hour: 0
-##### Twice a day, during quiet times: scan existing files, fill queue, find latest episodes for series and get subs for items added to the subtitle queue.
-  - tasks: ['populate-*', 'fill-*', '*-rss', get-subtitles]
-    schedule:
-      hour: '2-6/2'
-##### Every other day: find older unwatched episodes (also check which episode to start looking for, Run this manually the first time!)
-  - tasks: ['*-nextep', '*-discover']
-    schedule:
-      day: "*/2"
-      hour: 7 
-##### Purge Trakt lists and the movie queue.
-  - tasks: ['purge-*']
     interval:
       weeks: 1
 
@@ -250,27 +247,6 @@ templates:
 
 tasks:
 ########## SERIES ##########
-##### Remove ended or canceled series that have been watched from trakt list#
-  purge-series-list:
-    priority: 1
-    template:
-      - disable-seen-retry
-      - series-metainfo
-    trakt_lookup:
-      account: "{? trakt.account ?}"
-      username: "{? trakt.account ?}"    
-    trakt_list:
-      account: "{? trakt.account ?}"
-      list: "{? trakt.series ?}"
-      type: shows    
-    if:
-      - "tvdb_status == 'Ended' and trakt_watched": accept
-    list_remove:
-      - trakt_list:
-          account: "{? trakt.account ?}"
-          list: "{? trakt.series ?}"
-          type: shows
-
 # SCAN DATABASE 
 ##### Populates the series database with the files on the library, to avoid duplicate downloads#
   populate-series-db:
@@ -373,13 +349,13 @@ tasks:
       - torrents
       - transmission-series
     inputs:
-      - rss: http://showrss.info/user/1450.rss?magnets=true&namespaces=true&name=null&quality=any&re=yes
-      - rss: https://eztv.ag/ezrss.xml
-      - rss: https://rarbg.to/rssdd.php?category=1;18;41;49
-      - rss: 
-          url: https://zooqle.com/search?q=%2A+category%3ATV&fmt=rss
-          title: 'torrent:fileName'
-      - rss: https://www.limetorrents.cc/rss/20/
+      - rss: http://showrss.info/user/1450.rss?magnets=true&namespaces=true&name=null&quality=anyhd&re=yes
+#      - rss: https://eztv.ag/ezrss.xml
+#      - rss: https://rarbg.to/rssdd.php?category=1;18;41;49
+#      - rss: 
+#          url: https://zooqle.com/search?q=%2A+category%3ATV&fmt=rss
+#          title: 'torrent:fileName'
+#      - rss: https://www.limetorrents.cc/rss/20/
 
       
 
@@ -860,7 +836,29 @@ tasks:
       <<: *transmission-settings
       finished_for: 1 day
 
-  purge-old-seasons:
+##### Remove ended or canceled series that have been watched from trakt list#
+  clean-series-list:
+    priority: 1
+    template:
+      - disable-seen-retry
+      - series-metainfo
+    trakt_lookup:
+      account: "{? trakt.account ?}"
+      username: "{? trakt.account ?}"    
+    trakt_list:
+      account: "{? trakt.account ?}"
+      list: "{? trakt.series ?}"
+      type: shows    
+    if:
+      - "tvdb_status == 'Ended' and trakt_watched": accept
+    list_remove:
+      - trakt_list:
+          account: "{? trakt.account ?}"
+          list: "{? trakt.series ?}"
+          type: shows
+          
+##### Remove watched seasons from drive#          
+  clean-old-seasons:
     priority: 52
     template:
       - disable-seen-retry
