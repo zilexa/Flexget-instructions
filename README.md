@@ -1,11 +1,9 @@
-INTRO:
-To get a "Netflix-like" experience, please use [AUTOSETUP.SH](https://github.com/zilexa/autosetup "AUTOSETUP.SH") to install and configure the required tools. It will include this config.yml for Flexget. 
-The way it works: on http://trakt.tv you can create a free account, add TV Shows you like to follow to a list and add the Trakt.tv addon to your Kodi device. Kodi will sync your watched status with Trakt.tv (privately). Flexget will use this information to get the content you need and organise everything in such a way to deliver the NETFLIX experience! See requirements below before you install this.
+The way it works: on http://trakt.tv you can create a free account, add TV Shows titles you like to follow to a list (call that list tvshows) and add the Trakt.tv addon to your Kodi mediacenter device. Kodi will sync your watched status with Trakt.tv (privately). F
 
-NOTE:
-This Flexget config is fully based on Jonybat's config.yml. See the CHANGELOG for a full list of changes made to his config.yml. 
+Flexget is an amazingly powerful yet lightweight tool. There is no UI, it will simply run as service in the background. 
+It uses your Trakt list and watched status to find, select, download (RSS Feeds and magnet torrent sites) organise, enrich (with subtitles) and cleanup the content you want and organise everything in such a way to deliver the NETFLIX experience!
 
-In non-Flexget/non-technical terms, this config will allow Flexget to do the following on a daily basis **AUTOMATICALLY**, some tasks are performed more often:
+In non-Flexget/non-technical terms, this config will allow Flexget to do the following on a daily basis **AUTOMATICALLY**, some tasks are performed more often and for efficiency, not necessarily in this order:
 
 _TVshows:_
 - Gets the series titles you follow on Trakt.
@@ -16,7 +14,8 @@ _TVshows:_
 - Looks for your old series season packs and single episodes by discovering them on several websites.
 - Downloads if they match your requirements to prevent low quality files or language specific versions from being downloaded. 
 - Download 720p HD quality, if not found, accept 1080p HD quality on the second run.
-- Cleanup (purge) your Trakt account by removing fully watched series that have ended (or are cancelled) and delete whole seasons from your harddrive after you have started watching the next season or you have watched all seasons and the series has ended. 
+- Cleanup (purge) your Trakt account by removing fully watched series that have ended (or are cancelled) 
+- Delete whole seasons from your harddrive after you have started watching the next season or you have watched all seasons and the series has ended. 
 
 _Movies:_
 - Gets the movies you would like to see from your Trakt "watchlist".
@@ -36,14 +35,12 @@ _Subtitles:_
 _Organising everything:_
 - Purges Transmission, which is used for downloading. This will cleanup Transmission.
 - Always downloads the main file only, no other files that are usually present. No more clutter! 
-- Moves & renames files and organises them properly:
-- TV shows are saved to a folder using the TVDB naming, this is what Kodi also uses to recognise your media. This will make sure Kodi will ALWAYS recognise your shows correctly. Example: TVshows\Tvdb-Series Name\S01\Tvdb-Series-Name - epid - episode title [quality].ext
-- All episodes are saved in season specific folders. This allows you to simply delete a season folder to free up space.  
-- Example for Movies: Movies\Movietitle (year)\...
+- Moves & renames tv shows and movies after download and subtitle search is done and organises them properly. 
+- All episodes are saved in season-specific folders. This allows you to simply delete a season folder to free up space.  
 - Filenames will contain series or movies title, episode or year and quality release. 
 
 _And last, but not least:_
-- Triggers an update of your Kodi library after files have been processed! They will appear in your Kodi library automatically!
+- Triggers an update of your Kodi library after files have been processed! They will appear in your Kodi library automatically. 
 
 
 **Installation of software**
@@ -91,15 +88,14 @@ OPTIONAL: change video quality and subtitle language
 - default for series: 720p, if not found, accept the highest quality up to 1080p (usually this means if 720p is not found, 1080p will be selected if available otherwise standard HDTV). 
 - default for movies: 3 quality buckets (HQ/NQ/LQ): 4K-10bit-hdr, 1080P, 720P or lower. But bitrate is just as important that is why the buckets have filesize requirements. 
 
-- Want to understand the quality options?
-Please have a look at [this table](https://flexget.com/Plugins/quality) to understand the quality options and [this wiki](https://flexget.com/Plugins/series/timeframe) to understand how it works.
-
 - Change quality options: 
 `nano ~/flexget/config.yml` or use Filezilla to edit the file on your Mac/Windows Notepad. 
 For series: search for " configure_series:". The default setting is 720p,  
 For movies: find the HQ/NQ/LQ options. 
 
-***Modify language settings***
+Please have a look at [this table](https://flexget.com/Plugins/quality) to understand the quality options and [this wiki](https://flexget.com/Plugins/series/timeframe) to understand how it works.
+
+- Change Language:
 Have a look at "rejections". Make sure your language is not listed. By default, no translated content is accepted. Only original language content. Also Hindi is excluded. you might want to include that for Bollymovies. 
 For subtitles, search for "get-subtitles" and "find-subtitles". You can modify but also also add other languages. 
 
