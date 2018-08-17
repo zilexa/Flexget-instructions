@@ -8,7 +8,6 @@ This Flexget config is fully based on Jonybat's config.yml. See the CHANGELOG fo
 In non-Flexget/non-technical terms, this config will allow Flexget to do the following on a daily basis **AUTOMATICALLY**, some tasks are performed more often:
 
 _TVshows:_
-- Cleanup (purge) your Trakt account by removing fully watched series that have ended (or are cancelled).
 - Gets the series titles you follow on Trakt.
 - Finds the next episode you need based on your Watched Status in Trakt.
 - Looks for these series on your own drive. 
@@ -16,10 +15,10 @@ _TVshows:_
 - Looks for the latest episodes on RSS feeds.
 - Looks for your old series season packs and single episodes by discovering them on several websites.
 - Downloads if they match your requirements to prevent low quality files or language specific versions from being downloaded. 
-- Download regular HDTV quality to save space, this is an acceptable quality. If not found, accept 720p/1080p HD quality on the next run.
+- Download 720p HD quality, if not found, accept 1080p HD quality on the second run.
+- Cleanup (purge) your Trakt account by removing fully watched series that have ended (or are cancelled) and delete whole seasons from your harddrive after you have started watching the next season or you have watched all seasons and the series has ended. 
 
 _Movies:_
-- Cleanup (purge) your Trakt account by removing movies you already have from the Trakt watchlist.
 - Gets the movies you would like to see from your Trakt "watchlist".
 - Looks for movies on your drive and removes them from your Trakt "watchlist". 
 - Looks for any manually downloaded .torrent file in your Downloads\tempmedia folder.
@@ -27,13 +26,15 @@ _Movies:_
 - Quality: no prereleases or cinema recordings. Only Bluray rips in 1080p with a minimum filesize. But there are 2 fallbacks:
 - If 1080p with a certain minimum filesize is not available, it will fallback to a lower minimal filesize.  
 - If also not available, it will fallback to 720p with a minimum filesize treshold for 720p. 
+- Cleanup (purge) your Trakt account by removing movies you already have from the Trakt watchlist.
 
 _Subtitles:_
-- Find subtitles when the download is finished.
-- Add downloaded files without subs to the subtitle queue, Flexget will continue searching subs even after the files have been moved/renamed to the proper location.
+- Find subtitles when the download is finished using the original filename. 
+- Add downloaded files without subs to the subtitle queue. 
+- Keep searching for subtitles for all files in the queue even after they have been renamed and moved to their proper location.
 
 _Organising everything:_
-- Purges Transmission, which is used for downloading. This will cleanup Transmission daily. 
+- Purges Transmission, which is used for downloading. This will cleanup Transmission.
 - Always downloads the main file only, no other files that are usually present. No more clutter! 
 - Moves & renames files and organises them properly:
 - TV shows are saved to a folder using the TVDB naming, this is what Kodi also uses to recognise your media. This will make sure Kodi will ALWAYS recognise your shows correctly. Example: TVshows\Tvdb-Series Name\S01\Tvdb-Series-Name - epid - episode title [quality].ext
@@ -45,22 +46,39 @@ _And last, but not least:_
 - Triggers an update of your Kodi library after files have been processed! They will appear in your Kodi library automatically!
 
 
-**REQUIREMENTS**
-1. The first basic requirement: a device running Kodi, like a Raspberry Pi 3 (highly recommended!), preferrably on Debian, connected to the internet (wired preferred). Forget about OpenElec, you cannot install anything on OpenElec. If you have no clue what all of this means, get a Raspberry Pi 3 and go to: http://osmc.tv to create your own personal mediacenter.
+**Installation of software**
+1. The first basic requirement: an RPi2 or RPi3 or (recommended) Vero 4K. Go to https://osmc.tv and order one. Install and OSMC. With your TV remote go to MyOSMC, App Store and install Transmission (recommended: also go to Services and enable SAMBA server). 
 
-2. A (free, private) account on Trakt.tv. Create a list called "tvshows" and add the shows you would like to see. Also mark episodes/seasons you have already seen as watched otherwise they will be downloaded. 
+2. A (free, private) account on Trakt.tv. Create a list called "tvshows" and add the shows you would like to see. 
+Also mark episodes/seasons you have already seen as watched otherwise they will be downloaded. 
 
-3. If you need subtitles, create an account on and on, make sure the user/pw are the same for both sites. 
+3. If you need subtitles, create accounts with the same user/pw on opensubtitles.org and addic7ed.com.
 
 4. Use [AUTOSETUP.SH](https://github.com/zilexa/autosetup "AUTOSETUP.SH") to install. All you have to do is add your Trakt account, subtitles account, Transmission login and the location of your harddrive. Then you can run the file and sit back while it installs. More information via the link. 
 
-5. When finished, make sure you authorise trakt and run Flexget once via these two commands:
+**Configure your transmission to run 2 Flexget tasks after each completed download**
+`sudo systemctl stop transmission-damon`
+`cd /home/osmc/.config/transmission-deamon`
+`nano runflexget.sh`
+paste this: /home/osmc/flexget/bin/flexget execute --tasks find-* move-*
+and hit CTRL+O and CTRL+X
+`chmod +x runflexget.sh`
+`nano settings.json`
+Near the bottom, find and change accordingly: 
+"script-torrent-done-enabled": true,
+"script-torrent-done-filename": "/home/osmc/.config/transmission-daemon/runflexget.sh",
+hit CTRL+O and CTRL+X
+`sudo systemctl stop transmission-damon`
+
+**6. FIRST RUN: authorize flexget to use Trakt and run flexget once**
+When finished, make sure you authorise trakt and run Flexget once via these two commands:
 Authorize Flexget to access Trakt (you need a phone or pc and login to Trakt website to finish this step): 
 `~/flexget/bin/flexget trakt auth YOURTRAKTUSERNAME`
 
 Run Flexget once fully: 
 `~/flexget/bin/flexget execute --now`
 
+**7 START THE SERVICE AND LEAN BACK**
 Start the service, it has been enabled by Autosetup already, only need to start it (will also happen on reboot): 
 `sudo systemctl start flexget`
 
