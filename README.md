@@ -85,9 +85,9 @@ When finished, make sure you authorise trakt and run Flexget once via these two 
 - Start the service, it has been enabled by Autosetup already, only need to start it (will also happen on reboot): 
 `sudo systemctl start flexget`
 
-
-OPTIONAL. 
-***Modify quality settings***
+`` 
+`` 
+OPTIONAL: change video quality and subtitle language 
 - default for series: 720p, if not found, accept the highest quality up to 1080p (usually this means if 720p is not found, 1080p will be selected if available otherwise standard HDTV). 
 - default for movies: 3 quality buckets (HQ/NQ/LQ): 4K-10bit-hdr, 1080P, 720P or lower. But bitrate is just as important that is why the buckets have filesize requirements. 
 
