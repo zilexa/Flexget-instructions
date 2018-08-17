@@ -59,7 +59,7 @@ Also mark episodes/seasons you have already seen as watched otherwise they will 
 5. Use [AUTOSETUP.SH](https://github.com/zilexa/autosetup "AUTOSETUP.SH") to install. All you have to do is add your Trakt account, showrss account, subtitles account, Transmission login and the location of your harddrive. Then you can run the file and sit back while it installs. More information via the link. 
 - Note you need to add all of this information manually to secrets.yml and config.yml (showrss user id) if you do not use Autosetup!. 
 
-**Configure your transmission to run 2 Flexget tasks after each completed download**
+**6. Configure Transmission to run 2 Flexget tasks after each completed download**
 - `sudo systemctl stop transmission-damon`
 - `cd /home/osmc/.config/transmission-deamon`
 - `nano runflexget.sh`
@@ -73,7 +73,7 @@ and hit CTRL+O and CTRL+X
 hit CTRL+O and CTRL+X
 - `sudo systemctl stop transmission-damon`
 
-**6. FIRST RUN: authorize flexget to use Trakt and run flexget once**
+**7. FIRST RUN: authorize flexget to use Trakt and run flexget once**
 When finished, make sure you authorise trakt and run Flexget once via these two commands:
 - Authorize Flexget to access Trakt (you need a phone or pc and login to Trakt website to finish this step): 
 `~/flexget/bin/flexget trakt auth YOURTRAKTUSERNAME`
@@ -81,7 +81,7 @@ When finished, make sure you authorise trakt and run Flexget once via these two 
 - Run Flexget once fully: 
 `~/flexget/bin/flexget execute --now`
 
-**7 START THE SERVICE AND LEAN BACK**
+**8. START THE SERVICE AND LEAN BACK**
 - Start the service, it has been enabled by Autosetup already, only need to start it (will also happen on reboot): 
 `sudo systemctl start flexget`
 
