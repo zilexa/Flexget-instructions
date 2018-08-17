@@ -54,32 +54,52 @@ Also mark episodes/seasons you have already seen as watched otherwise they will 
 
 3. If you need subtitles, create accounts with the same user/pw on opensubtitles.org and addic7ed.com.
 
-4. Use [AUTOSETUP.SH](https://github.com/zilexa/autosetup "AUTOSETUP.SH") to install. All you have to do is add your Trakt account, subtitles account, Transmission login and the location of your harddrive. Then you can run the file and sit back while it installs. More information via the link. 
+4. Create an account at showrss.info, add the series you like and go to your feed. write down the user ID you see in the url.
+
+5. Use [AUTOSETUP.SH](https://github.com/zilexa/autosetup "AUTOSETUP.SH") to install. All you have to do is add your Trakt account, showrss account, subtitles account, Transmission login and the location of your harddrive. Then you can run the file and sit back while it installs. More information via the link. 
+- Note you need to add all of this information manually to secrets.yml and config.yml (showrss user id) if you do not use Autosetup!. 
 
 **Configure your transmission to run 2 Flexget tasks after each completed download**
-`sudo systemctl stop transmission-damon`
-`cd /home/osmc/.config/transmission-deamon`
-`nano runflexget.sh`
-paste this: /home/osmc/flexget/bin/flexget execute --tasks find-* move-*
+- `sudo systemctl stop transmission-damon`
+- `cd /home/osmc/.config/transmission-deamon`
+- `nano runflexget.sh`
+- paste this: /home/osmc/flexget/bin/flexget execute --tasks find-* move-*  
 and hit CTRL+O and CTRL+X
-`chmod +x runflexget.sh`
-`nano settings.json`
-Near the bottom, find and change accordingly: 
+- `chmod +x runflexget.sh`
+- `nano settings.json`
+- Near the bottom, find and change accordingly: 
 "script-torrent-done-enabled": true,
 "script-torrent-done-filename": "/home/osmc/.config/transmission-daemon/runflexget.sh",
 hit CTRL+O and CTRL+X
-`sudo systemctl stop transmission-damon`
+- `sudo systemctl stop transmission-damon`
 
 **6. FIRST RUN: authorize flexget to use Trakt and run flexget once**
 When finished, make sure you authorise trakt and run Flexget once via these two commands:
-Authorize Flexget to access Trakt (you need a phone or pc and login to Trakt website to finish this step): 
+- Authorize Flexget to access Trakt (you need a phone or pc and login to Trakt website to finish this step): 
 `~/flexget/bin/flexget trakt auth YOURTRAKTUSERNAME`
 
-Run Flexget once fully: 
+- Run Flexget once fully: 
 `~/flexget/bin/flexget execute --now`
 
 **7 START THE SERVICE AND LEAN BACK**
-Start the service, it has been enabled by Autosetup already, only need to start it (will also happen on reboot): 
+- Start the service, it has been enabled by Autosetup already, only need to start it (will also happen on reboot): 
 `sudo systemctl start flexget`
 
+
+OPTIONAL. 
+***Modify quality settings***
+- default for series: 720p, if not found, accept the highest quality up to 1080p (usually this means if 720p is not found, 1080p will be selected if available otherwise standard HDTV). 
+- default for movies: 3 quality buckets (HQ/NQ/LQ): 4K-10bit-hdr, 1080P, 720P or lower. But bitrate is just as important that is why the buckets have filesize requirements. 
+
+- Want to understand the quality options?
+Please have a look at [this table](https://flexget.com/Plugins/quality) to understand the quality options and [this wiki](https://flexget.com/Plugins/series/timeframe) to understand how it works.
+
+- Change quality options: 
+`nano ~/flexget/config.yml` or use Filezilla to edit the file on your Mac/Windows Notepad. 
+For series: search for " configure_series:". The default setting is 720p,  
+For movies: find the HQ/NQ/LQ options. 
+
+***Modify language settings***
+Have a look at "rejections". Make sure your language is not listed. By default, no translated content is accepted. Only original language content. Also Hindi is excluded. you might want to include that for Bollymovies. 
+For subtitles, search for "get-subtitles" and "find-subtitles". You can modify but also also add other languages. 
 
