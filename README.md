@@ -1,7 +1,7 @@
 The way it works: on http://trakt.tv you can create a free account, add TV Shows titles you like to follow to a list (call that list tvshows) and add the Trakt.tv addon to your Kodi mediacenter device. Kodi will sync your watched status with Trakt.tv (privately). F
 
 Flexget is an amazingly powerful yet lightweight tool. There is no UI, it will simply run as service in the background. 
-It uses your Trakt list and watched status to find, select, download (RSS Feeds and magnet torrent sites) organise, enrich (with subtitles) and cleanup the content you want and organise everything in such a way to deliver the NETFLIX experience!
+It uses your Trakt list and watched status to find, select, download (RSS Feeds and magnet torrent sites) organise, enrich (with subtitles) and cleanup the content you want and organise everything in such a way to deliver the Lazy Couch Experience!
 
 In non-Flexget/non-technical terms, this config will allow Flexget to do the following on a daily basis **AUTOMATICALLY**, some tasks are performed more often and for efficiency, not necessarily in this order:
 
