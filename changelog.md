@@ -1,15 +1,15 @@
 This config is fully based on jonybat's flexget config. Below are all the changes I have made to his config to do everything I believe is necessary for the ultimate Netflix-like experience.
 
-#################
-##    TODO     ##
-#################
-The config works perfectly after the latest update of 20171109. However I do want to do 2 more things:
-- Optimize the part that searches for Season packs.
-- Remove log_filter.py if that plugin is no longer supported by the latest version of Flexget (2.10.106, November 2017).
+NOT WORKING: any episode without proper episode identification: S03E21 is supported, 321 is not, just like S10E21 is supported but 1021 is not.
+Note the config has a section that DOES allow these files to be processed, it has been commented out. Technically it works but not entirely due to episodes sometimes containing the release year (2014 could also mean S20E14). 
 
 #################
 ##  CHANGELOG  ##
 #################
+20180817
+Many small updates have been applied months ago. Today I modified the scheduler, it runs less frequently now because you should configure Transmission to run the appropriate Flexget tasks after each completed download. I updated the readme instructions: https://github.com/zilexa/flexget_config/ 
+Also renamed tasks with "purge" in the name to "clean" and vice versa to allow the scheduler to be more simplified. 
+
 20171109
 ALL issues have now been solved. Most of them were minor. The biggest changes:
 -Solved issues with failing subtitle lookup. 
