@@ -1,11 +1,17 @@
 This config is fully based on jonybat's flexget config. Below are all the changes I have made to his config to do everything I believe is necessary for the ultimate Netflix-like experience.
 
-NOT WORKING: any episode without proper episode identification: S03E21 is supported, 321 is not, just like S10E21 is supported but 1021 is not.
+NOT WORKING 1: any episode without proper episode identification: S03E21 is supported, 321 is not, just like S10E21 is supported but 1021 is not.
 Note the config has a section that DOES allow these files to be processed, it has been commented out. Technically it works but not entirely due to episodes sometimes containing the release year (2014 could also mean S20E14). 
+
+NOT WORKING 2: finding subtitles always seems to fail, I believe I have set it to find strict matches, will have to look into this. Could also be a subliminal bug. 
+
 
 #################
 ##  CHANGELOG  ##
 #################
+20180820
+I made a little mistake with task priorities, causing Flexget to find unwatched episodes that were already collected (on your harddrive). This has been fixed now and tested. 
+
 20180817
 Many small updates have been applied months ago. Today I modified the scheduler, it runs less frequently now because you should configure Transmission to run the appropriate Flexget tasks after each completed download. I updated the readme instructions: https://github.com/zilexa/flexget_config/ 
 Also renamed tasks with "purge" in the name to "clean" and vice versa to allow the scheduler to be more simplified. 
