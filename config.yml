@@ -246,10 +246,40 @@ templates:
 
 tasks:
 ########## SERIES ##########
-# SCAN DATABASE 
+# SYNC WITH TRAKT
+##### First run only (use ~/flexget/bin/flexget execute --now) Sync Flexget database with watched status in Trakt#  
+  get-series-nextep:
+    priority: 2
+    template:
+      - disable-seen-retry
+      - series-metainfo
+    list_clear:
+      what:
+        - entry_list: trakt-series-begin
+    next_trakt_episodes:
+      account: "{? trakt.account ?}"
+      list: "{? trakt.series ?}"
+      context: watched
+      position: next
+    accept_all: yes
+    list_add:
+      - entry_list: trakt-series-begin
+      
+  set-series-nextep:
+    priority: 3
+    template:
+      - disable-seen-retry
+      - series-metainfo
+    entry_list: trakt-series-begin
+    accept_all: yes
+    set:
+      series_name: "{{tvdb_series_name|escape|replace('&#39;', '')}}"
+    set_series_begin: yes
+ 
+ # SCAN DATABASE 
 ##### Populates the series database with the files on the library, to avoid duplicate downloads#
   populate-series-db:
-    priority: 2
+    priority: 4
     template:
       - series-metainfo
     seen: local
@@ -267,40 +297,7 @@ tasks:
       settings:
         tracking: no
         identified_by: ep
-
-
-# SYNC WITH TRAKT
-##### First run only (use ~/flexget/bin/flexget execute --now) Sync Flexget database with watched status in Trakt#  
-  get-series-nextep:
-    priority: 3
-    template:
-      - disable-seen-retry
-      - series-metainfo
-    list_clear:
-      what:
-        - entry_list: trakt-series-begin
-    next_trakt_episodes:
-      account: "{? trakt.account ?}"
-      list: "{? trakt.series ?}"
-      context: watched
-      position: next
-    accept_all: yes
-    list_add:
-      - entry_list: trakt-series-begin
-      
-  set-series-nextep:
-    priority: 4
-    template:
-      - disable-seen-retry
-      - series-metainfo
-    entry_list: trakt-series-begin
-    accept_all: yes
-    set:
-      series_name: "{{tvdb_series_name|escape|replace('&#39;', '')}}"
-    set_series_begin: yes
- 
- 
- 
+  
  ##### Fetch, format and output trakt series list to a custom entry list#
   fill-series-list:
     priority: 5
@@ -348,13 +345,13 @@ tasks:
       - torrents
       - transmission-series
     inputs:
-      - rss: http://showrss.info/user/USERIDNUMBER.rss?magnets=true&namespaces=true&name=null&quality=anyhd&re=yes
-      - rss: https://eztv.ag/ezrss.xml
-      - rss: https://rarbg.to/rssdd.php?category=1;18;41;49
-      - rss: 
-          url: https://zooqle.com/search?q=%2A+category%3ATV&fmt=rss
-          title: 'torrent:fileName'
-      - rss: https://www.limetorrents.cc/rss/20/
+      - rss: http://showrss.info/user/1450.rss?magnets=true&namespaces=true&name=null&quality=anyhd&re=yes
+#      - rss: https://eztv.ag/ezrss.xml
+#      - rss: https://rarbg.to/rssdd.php?category=1;18;41;49
+#      - rss: 
+#          url: https://zooqle.com/search?q=%2A+category%3ATV&fmt=rss
+#          title: 'torrent:fileName'
+#      - rss: https://www.limetorrents.cc/rss/20/
 
       
 
@@ -837,7 +834,7 @@ tasks:
 
 ##### Remove ended or canceled series that have been watched from trakt list#
   clean-series-list:
-    priority: 1
+    priority: 52
     template:
       - disable-seen-retry
       - series-metainfo
@@ -858,7 +855,7 @@ tasks:
           
 ##### Remove watched seasons from drive#          
   clean-old-seasons:
-    priority: 52
+    priority: 53
     template:
       - disable-seen-retry
       - series-metainfo
