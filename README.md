@@ -79,12 +79,11 @@ Hardware: a Raspberry Pi 3 or (recommended) [Vero 4K](https://osmc.tv/store/). Y
 - `sudo systemctl stop transmission-damon`
 - `cd ~/.config/transmission-deamon`
 - `nano runflexget.sh`
-- paste this: /home/osmc/flexget/bin/flexget execute --tasks find-* move-*  
+- paste this: `/home/osmc/flexget/bin/flexget execute --tasks find-* move-*`
 and hit CTRL+O and CTRL+X
 - `chmod +x runflexget.sh`
 - `nano settings.json`
 - Near the bottom, find and change accordingly: 
-
 `"script-torrent-done-enabled": true,
 "script-torrent-done-filename": "/home/osmc/.config/transmission-daemon/runflexget.sh",`
 hit CTRL+O and CTRL+X
