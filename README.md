@@ -114,7 +114,7 @@ You might need an urlrewrite, these are part of the "torrent" config, which is l
 <p>
 If you have installed Flexget using Autosetup.sh OR manually by running the commands from autosetup.sh yourself, this is the only correct way to upgrade flexget:
 Check your version and the latest: `~/flexget/bin/flexget -V` 
-stop flexget daemon: `sudo systemctl stop flexget`
+stop the flexget service: `sudo systemctl stop flexget`
 upgrade setuptools: `sudo pip3 install --upgrade setuptools`
 upgrade pip3: `pip3 install --upgrade pip` #not sure if necessary but won't do harm
 go to flexget folder: `cd ~/flexget/`
@@ -125,4 +125,5 @@ upgrade transmissionrpc: `pip3 install transmissionrpc --upgrade` #loptional, la
 upgrade subliminal: `pip3 install subliminal --upgrade` #optional, last update was 2016
 `exit`
 optional: on it's next run, Flexget will upgrade it's database if needed. This might cause issues. You can delete your database (`rm -r ~/flexget/db-config.sqlite`) and do the 2 "first run" tasks again (authorizing Trakt and run with execute --now). 
+Start the flexget service:`sudo systemctl start flexget`
 </p></details>
