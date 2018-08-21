@@ -16,9 +16,9 @@ In non-Flexget/non-technical terms, this guide will allow Flexget to do the foll
 
 <details><summary>What Flexget does for TVshows:</summary>
 <p>
-* Get the series titles you follow on Trakt.
-* Finds the next episode you need based on your Watched Status in Trakt.
-* Checks which series episodes you might already have on your drive. 
+*Get the series titles you follow on Trakt.
+*Finds the next episode you need based on your Watched Status in Trakt.
+*Checks which series episodes you might already have on your drive. 
 * Looks for the latest episodes on RSS feeds.
 * Looks for your old series seasons and single episodes by discovering them on several websites.
 * Downloads if they match your requirements to prevent low quality files or language specific versions from being downloaded. 
