@@ -103,7 +103,7 @@ For subtitles, search for "get-subtitles" and "find-subtitles". You can modify b
 
 ``
 `` 
-<details><summary>**How to upgrade Flexget**</summary>
+<details>**<summary>**How to upgrade Flexget**</summary>**
 <p>
 If you have installed Flexget using Autosetup.sh OR manually by running the commands from autosetup.sh yourself, this is the only correct way to upgrade flexget:
 Check your version and the latest: `~/flexget/bin/flexget -V` 
