@@ -84,7 +84,9 @@ When finished, make sure you authorise trakt and run Flexget once via these two 
 `sudo systemctl start flexget`
 
 - - - -
-
+Frequently Asked Questions:
+<details><summary>How to change desired subtitle language</summary>
+<p>
 - OPTIONAL: change video quality and subtitle language 
 Default for series: 720p, if not found, accept the highest quality up to 1080p (usually this means if 720p is not found, 1080p will be selected if available otherwise standard HDTV). 
 Default for movies: 3 quality buckets (HQ/NQ/LQ): 4K-10bit-hdr, 1080P, 720P or lower. But bitrate is just as important that is why the buckets have filesize requirements. 
@@ -93,17 +95,21 @@ Change quality options:
 For series: search for " configure_series:". The default setting is 720p,  
 For movies: find the HQ/NQ/LQ options. 
 Please have a look at [this table](https://flexget.com/Plugins/quality) to understand the quality options and [this wiki](https://flexget.com/Plugins/series/timeframe) to understand how it works.
+</p></details>
 
-- OPTIONAL Change Language:
-Have a look at "rejections". Make sure your language is not listed. By default, no translated content is accepted. Only original language content. Also Hindi is excluded. you might want to include that for Bollymovies. 
-For subtitles, search for "get-subtitles" and "find-subtitles". You can modify but also also add other languages. 
-
-
-
-
-``
-`` 
-<details>**<summary>**How to upgrade Flexget**</summary>**
+<details><summary>How to change desired subtitle language</summary>
+<p>
+In the "template" section at the beginning of config.yml, find the "rejections" section. 
+Make sure your language is not listed. By default, no translated content is accepted. Only original language content. Also Hindi is excluded. you might want to include that for Bollymovies. 
+For subtitles, in the "tasks" section, find tasks "get-subtitles" and "find-subtitles". You can modify but also also add other languages. 
+</p></details>
+<details><summary>How to change add RSS feeds and other sources</summary>
+You can add RSS feeds to config.yml in the task "download-series-rss".
+You can add search engines to the 'from' part of *-discover tasks ( download-seasons-discover,  download-series-discover and the 3 movies discover tasks). 
+You might need an urlrewrite, these are part of the "torrent" config, which is located below the "templates" and above the "tasks". Ask for help on the flexget forum (https://discuss.flexget.com). 
+<p>
+</p></details>
+<details><summary>How to upgrade Flexget</summary>
 <p>
 If you have installed Flexget using Autosetup.sh OR manually by running the commands from autosetup.sh yourself, this is the only correct way to upgrade flexget:
 Check your version and the latest: `~/flexget/bin/flexget -V` 
