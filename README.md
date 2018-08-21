@@ -71,7 +71,7 @@ and hit CTRL+O and CTRL+X
 hit CTRL+O and CTRL+X
 - `sudo systemctl stop transmission-damon`
 
-**7. FIRST RUN: authorize flexget to use Trakt and run flexget once**
+###7. FIRST RUN: authorize flexget to use Trakt and run flexget once###
 When finished, make sure you authorise trakt and run Flexget once via these two commands:
 - Authorize Flexget to access Trakt (you need a phone or pc and login to Trakt website to finish this step): 
 `~/flexget/bin/flexget trakt auth YOURTRAKTUSERNAME`
@@ -80,7 +80,7 @@ When finished, make sure you authorise trakt and run Flexget once via these two 
 `~/flexget/bin/flexget execute --now`
 
 **8. START THE SERVICE AND LEAN BACK**
->- Start the service, it has been enabled by Autosetup already, only need to start it (will also happen on reboot): 
+- Start the service, it has been enabled by Autosetup already, only need to start it (will also happen on reboot): 
 `sudo systemctl start flexget`
 
 - - - -
