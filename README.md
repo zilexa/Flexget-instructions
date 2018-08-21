@@ -85,13 +85,12 @@ When finished, make sure you authorise trakt and run Flexget once via these two 
 
 - - - -
 Frequently Asked Questions:
+To edit your config file, `nano ~/flexget/config.yml` or use Filezilla to access your device via SFTP and edit config.yml with your favorite text editor (highly recommended).
 <details><summary>How to change desired subtitle language?</summary>
-<p>
-- OPTIONAL: change video quality and subtitle language 
-Default for series: 720p, if not found, accept the highest quality up to 1080p (usually this means if 720p is not found, 1080p will be selected if available otherwise standard HDTV). 
-Default for movies: 3 quality buckets (HQ/NQ/LQ): 4K-10bit-hdr, 1080P, 720P or lower. But bitrate is just as important that is why the buckets have filesize requirements. 
+<p> 
+Default for series: search for 720p releases, if not found, accept the highest available quality up to 1080p. This means 720p is first preferred but if not found, 1080p will be selected, if also not found, any lower but acceptable (=HDTV release) will be accepted.
+Default for movies: 3 quality buckets (HQ/NQ/LQ): 1080p 8-25GB, 1080P 2-8GB, 720P 1-8GB. Bitrate is more important that is why the buckets have filesize requirements. 
 Change quality options: 
-`nano ~/flexget/config.yml` or use Filezilla to edit the file on your Mac/Windows Notepad. 
 For series: search for " configure_series:". The default setting is 720p,  
 For movies: find the HQ/NQ/LQ options. 
 Please have a look at [this table](https://flexget.com/Plugins/quality) to understand the quality options and [this wiki](https://flexget.com/Plugins/series/timeframe) to understand how it works.
