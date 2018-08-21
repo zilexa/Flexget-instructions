@@ -14,7 +14,7 @@ Content is downloaded using RSS Feeds and search engines that provide magnet lin
 What does it do exactly?
 In non-Flexget/non-technical terms, this guide will allow Flexget to do the following on a daily basis **AUTOMATICALLY**, some tasks are performed more often and for efficiency, not necessarily in this order:
 
-<details><summary>What Flexget does for TVshows:</summary>
+<details><summary>What Flexget does for TVshows...</summary>
 <p><ul>
 <li>Get the series titles you follow on Trakt.</li>
 <li>Finds the next episode you need based on your Watched Status in Trakt.</li>
@@ -25,7 +25,7 @@ In non-Flexget/non-technical terms, this guide will allow Flexget to do the foll
 <li>Download 720p HD quality, if not found, accept 1080p HD quality on the second run.</li>
 </ul></p></details>
 
-<details><summary>What Flexget does for Movies</summary>
+<details><summary>What Flexget does for Movies...</summary>
 <p><ul>
 <li> Gets the movies you would like to see from your Trakt "watchlist".</li>
 <li> Looks for movies on your drive and removes them from your Trakt "watchlist". </li>
@@ -36,14 +36,14 @@ In non-Flexget/non-technical terms, this guide will allow Flexget to do the foll
 <li> If also not available, it will fallback to 720p with a minimum filesize treshold for 720p. </li>
 </ul></p></details>
 
-<details><summary>And even subtitles</summary>
+<details><summary>And even subtitles...</summary>
 <p><ul>
 <li> Find subtitles when the download is finished using the original filename. </li>
 <li> Add downloaded files without subs to the subtitle queue. </li>
 <li> Keep searching for subtitles for all files in the queue even after they have been renamed and moved to their proper location.</li>
 </ul></p></details>
 
-<details><summary>How flexget organises everything</summary>
+<details><summary>How flexget organises everything..</summary>
 <p><ul>
 <li> Purges Transmission, which is used for downloading. This will cleanup Transmission.</li>
 <li> Always downloads the main file only, no other files that are usually present. No more clutter! </li>
@@ -52,7 +52,7 @@ In non-Flexget/non-technical terms, this guide will allow Flexget to do the foll
 <li> Filenames will contain series or movies title, episode or year and quality release. </li>
 </ul></p></details>
 
-<details><summary>And last, but not least..</summary>
+<details><summary>And last, but not least</summary>
 <p><ul>
 <li> Triggers an update of your Kodi library after files have been processed! They will appear in your Kodi library automatically. </li>
 <li> Cleanup (purge) your Trakt account by removing fully watched series that have ended (or are cancelled) </li>
