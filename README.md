@@ -42,6 +42,8 @@ _And last, but not least:_
 - Delete old seasons from your harddrive after you have started watching the next season
 - Delete tv shows from your harddrive after you have watched all seasons and the series has ended. 
 
+- - - -
+
 **Installation of software**
 1. The first basic requirement: an RPi2 or RPi3 or (recommended) Vero 4K. Go to https://osmc.tv and order one. Install and OSMC. With your TV remote go to MyOSMC, App Store and install Transmission (recommended: also go to Services and enable SAMBA server). 
 
@@ -92,7 +94,7 @@ For series: search for " configure_series:". The default setting is 720p,
 For movies: find the HQ/NQ/LQ options. 
 Please have a look at [this table](https://flexget.com/Plugins/quality) to understand the quality options and [this wiki](https://flexget.com/Plugins/series/timeframe) to understand how it works.
 
-- Change Language:
+- OPTIONAL Change Language:
 Have a look at "rejections". Make sure your language is not listed. By default, no translated content is accepted. Only original language content. Also Hindi is excluded. you might want to include that for Bollymovies. 
 For subtitles, search for "get-subtitles" and "find-subtitles". You can modify but also also add other languages. 
 
@@ -101,7 +103,8 @@ For subtitles, search for "get-subtitles" and "find-subtitles". You can modify b
 
 ``
 `` 
-**How to upgrade Flexget**
+<details><summary>**How to upgrade Flexget**</summary>
+<p>
 If you have installed Flexget using Autosetup.sh OR manually by running the commands from autosetup.sh yourself, this is the only correct way to upgrade flexget:
 Check your version and the latest: `~/flexget/bin/flexget -V` 
 stop flexget daemon: `sudo systemctl stop flexget`
@@ -115,4 +118,4 @@ upgrade transmissionrpc: `pip3 install transmissionrpc --upgrade` #loptional, la
 upgrade subliminal: `pip3 install subliminal --upgrade` #optional, last update was 2016
 `exit`
 optional: on it's next run, Flexget will upgrade it's database if needed. This might cause issues. You can delete your database (`rm -r ~/flexget/db-config.sqlite`) and do the 2 "first run" tasks again (authorizing Trakt and run with execute --now). 
-
+</p></details>
