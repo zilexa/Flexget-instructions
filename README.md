@@ -84,8 +84,8 @@ and hit CTRL+O and CTRL+X
 - `chmod +x runflexget.sh`
 - `nano settings.json`
 - Near the bottom, find and change accordingly: 
-"script-torrent-done-enabled": true,
-"script-torrent-done-filename": "/home/osmc/.config/transmission-daemon/runflexget.sh",
+`"script-torrent-done-enabled": true,
+"script-torrent-done-filename": "/home/osmc/.config/transmission-daemon/runflexget.sh",`
 hit CTRL+O and CTRL+X
 - `sudo systemctl stop transmission-damon`
 
