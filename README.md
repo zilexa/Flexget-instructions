@@ -83,18 +83,36 @@ When finished, make sure you authorise trakt and run Flexget once via these two 
 
 `` 
 `` 
-OPTIONAL: change video quality and subtitle language 
-- default for series: 720p, if not found, accept the highest quality up to 1080p (usually this means if 720p is not found, 1080p will be selected if available otherwise standard HDTV). 
-- default for movies: 3 quality buckets (HQ/NQ/LQ): 4K-10bit-hdr, 1080P, 720P or lower. But bitrate is just as important that is why the buckets have filesize requirements. 
-
-- Change quality options: 
+- OPTIONAL: change video quality and subtitle language 
+Default for series: 720p, if not found, accept the highest quality up to 1080p (usually this means if 720p is not found, 1080p will be selected if available otherwise standard HDTV). 
+Default for movies: 3 quality buckets (HQ/NQ/LQ): 4K-10bit-hdr, 1080P, 720P or lower. But bitrate is just as important that is why the buckets have filesize requirements. 
+Change quality options: 
 `nano ~/flexget/config.yml` or use Filezilla to edit the file on your Mac/Windows Notepad. 
 For series: search for " configure_series:". The default setting is 720p,  
 For movies: find the HQ/NQ/LQ options. 
-
 Please have a look at [this table](https://flexget.com/Plugins/quality) to understand the quality options and [this wiki](https://flexget.com/Plugins/series/timeframe) to understand how it works.
 
 - Change Language:
 Have a look at "rejections". Make sure your language is not listed. By default, no translated content is accepted. Only original language content. Also Hindi is excluded. you might want to include that for Bollymovies. 
 For subtitles, search for "get-subtitles" and "find-subtitles". You can modify but also also add other languages. 
+
+
+
+
+``
+`` 
+**How to upgrade Flexget**
+If you have installed Flexget using Autosetup.sh OR manually by running the commands from autosetup.sh yourself, this is the only correct way to upgrade flexget:
+Check your version and the latest: `~/flexget/bin/flexget -V` 
+stop flexget daemon: `sudo systemctl stop flexget`
+upgrade setuptools: `sudo pip3 install --upgrade setuptools`
+upgrade pip3: `pip3 install --upgrade pip` #not sure if necessary but won't do harm
+go to flexget folder: `cd ~/flexget/`
+upgrade upgrade pip: `bin/pip install --upgrade pip`
+upgrade upgrade flexget: `bin/pip install --upgrade flexget`
+activate the virtualenv: `source ~/flexget/bin/activate`
+upgrade transmissionrpc: `pip3 install transmissionrpc --upgrade` #loptional, last update was 2013
+upgrade subliminal: `pip3 install subliminal --upgrade` #optional, last update was 2016
+`exit`
+optional: on it's next run, Flexget will upgrade it's database if needed. This might cause issues. You can delete your database (`rm -r ~/flexget/db-config.sqlite`) and do the 2 "first run" tasks again (authorizing Trakt and run with execute --now). 
 
