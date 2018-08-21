@@ -1,9 +1,8 @@
 Want to have free choice of on-demand tv content? Are on-demand subscription services limiting the available content and forcing you to watch a series within a few months? Did your favourite tvshow or movie became unavailable or is your TV subscription only offering you low quality crap? 
 Enjoy the freedom. Keep paying for all those, since it is the only way to pay for content (due too a stubborn industry) and go for free choice.  
 
-The way it works: on http://trakt.tv you can create a free account, add TV Shows titles you like to follow to a list (call that list tvshows). Trakt already has a list for movies, it is called "watchlist". Add the Trakt.tv addon to your Kodi mediacenter device. Kodi will sync your watched status with Trakt.tv (privately). Trakt does not offer any media content. It is purely a wikipedia for tv and movies. By using trakt we now have an overview of 1) what you want to watch and 2) which episodes you do not need, since you already watched them. 
-
-You can use Trakt.tv or just the internet in general to discover the shows and movies you would like to add to your tvshows list and your movies watchlist. 
+The way it works: on http://trakt.tv you can create a free account, add TV Shows titles you like to follow to a list (call that list tvshows). Trakt already has a list for movies, it is called "watchlist". Add the Trakt.tv addon to your Kodi mediacenter device. Kodi will sync your watched status with Trakt.tv (privately). 
+Trakt does not offer any media content. It is purely a wikipedia for tv and movies. You can use Trakt.tv or just the internet in general to discover the shows and movies you would like to add to your tvshows list and your movies watchlist. By using trakt we now have an overview of 1) what you want to watch and 2) which episodes or movies you do not need, since you have already watched them.
 
 FLEXGET
 Flexget is an amazingly powerful yet lightweight tool. There is no UI, it will simply run as service in the background. It is fully open source and developed and maintained by volunteers. you can support them here: https://flexget.com/ by donating.
