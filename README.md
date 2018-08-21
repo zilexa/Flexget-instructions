@@ -1,21 +1,32 @@
-The way it works: on http://trakt.tv you can create a free account, add TV Shows titles you like to follow to a list (call that list tvshows) and add the Trakt.tv addon to your Kodi mediacenter device. Kodi will sync your watched status with Trakt.tv (privately). F
+Want to have free choice of on-demand tv content? Are on-demand subscription services limiting the available content and forcing you to watch a series within a few months? Did your favourite tvshow or movie became unavailable or is your TV subscription only offering you low quality crap? 
+Enjoy the freedom. Keep paying for all those, since it is the only way to pay for content (due too a stubborn industry) and go for free choice.  
 
-Flexget is an amazingly powerful yet lightweight tool. There is no UI, it will simply run as service in the background. 
-It uses your Trakt list and watched status to find, select, download (RSS Feeds and magnet torrent sites) organise, enrich (with subtitles) and cleanup the content you want and organise everything in such a way to deliver the Lazy Couch Experience!
+The way it works: on http://trakt.tv you can create a free account, add TV Shows titles you like to follow to a list (call that list tvshows). Trakt already has a list for movies, it is called "watchlist". Add the Trakt.tv addon to your Kodi mediacenter device. Kodi will sync your watched status with Trakt.tv (privately). Trakt does not offer any media content. It is purely a wikipedia for tv and movies. By using trakt we now have an overview of 1) what you want to watch and 2) which episodes you do not need, since you already watched them. 
 
-In non-Flexget/non-technical terms, this config will allow Flexget to do the following on a daily basis **AUTOMATICALLY**, some tasks are performed more often and for efficiency, not necessarily in this order:
+You can use Trakt.tv or just the internet in general to discover the shows and movies you would like to add to your tvshows list and your movies watchlist. 
 
-_TVshows:_
-- Gets the series titles you follow on Trakt.
+FLEXGET
+Flexget is an amazingly powerful yet lightweight tool. There is no UI, it will simply run as service in the background. It is fully open source and developed and maintained by volunteers. you can support them here: https://flexget.com/ by donating.
+It uses your Trakt list and watched status to find, select, download,  organise, enrich (with subtitles) and cleanup the content you want and organise everything in such a way to deliver the Lazy Couch Experience!
+
+Content is downloaded using RSS Feeds and search engines that provide magnet links to torrent hives. 
+
+What does it do exactly?
+In non-Flexget/non-technical terms, this guide will allow Flexget to do the following on a daily basis **AUTOMATICALLY**, some tasks are performed more often and for efficiency, not necessarily in this order:
+
+<details><summary>_What Flexget does for TVshows:_</summary>
+<p>
+- Get the series titles you follow on Trakt.
 - Finds the next episode you need based on your Watched Status in Trakt.
-- Looks for these series on your own drive. 
-- Looks for any manually .torrent files in your Downloads\tempmedia folder.
+- Checks which series episodes you might already have on your drive. 
 - Looks for the latest episodes on RSS feeds.
-- Looks for your old series season packs and single episodes by discovering them on several websites.
+- Looks for your old series seasons and single episodes by discovering them on several websites.
 - Downloads if they match your requirements to prevent low quality files or language specific versions from being downloaded. 
 - Download 720p HD quality, if not found, accept 1080p HD quality on the second run.
+</p></details>
 
-_Movies:_
+<details><summary>_What Flexget does for Movies_</summary>
+<p>
 - Gets the movies you would like to see from your Trakt "watchlist".
 - Looks for movies on your drive and removes them from your Trakt "watchlist". 
 - Looks for any manually downloaded .torrent file in your Downloads\tempmedia folder.
@@ -23,25 +34,30 @@ _Movies:_
 - Quality: no prereleases or cinema recordings. Only Bluray rips in 1080p with a minimum filesize. But there are 2 fallbacks:
 - If 1080p with a certain minimum filesize is not available, it will fallback to a lower minimal filesize.  
 - If also not available, it will fallback to 720p with a minimum filesize treshold for 720p. 
+</p></details>
 
-_Subtitles:_
+<details><summary>_And even subtitles_</summary>
+<p>
 - Find subtitles when the download is finished using the original filename. 
 - Add downloaded files without subs to the subtitle queue. 
 - Keep searching for subtitles for all files in the queue even after they have been renamed and moved to their proper location.
+</p></details>
 
-_Organising everything:_
+<details><summary>_How flexget organises everything_</summary>
+<p>
 - Purges Transmission, which is used for downloading. This will cleanup Transmission.
 - Always downloads the main file only, no other files that are usually present. No more clutter! 
 - Moves & renames tv shows and movies after download and subtitle search is done and organises them properly. 
 - All episodes are saved in season-specific folders. This allows you to simply delete a season folder to free up space.  
 - Filenames will contain series or movies title, episode or year and quality release. 
+</p></details> 
 
-_And last, but not least:_
+<details><summary>_And last, but not least.._</summary>
 - Triggers an update of your Kodi library after files have been processed! They will appear in your Kodi library automatically. 
 - Cleanup (purge) your Trakt account by removing fully watched series that have ended (or are cancelled) 
 - Delete old seasons from your harddrive after you have started watching the next season
 - Delete tv shows from your harddrive after you have watched all seasons and the series has ended. 
-
+</p></details>
 - - - -
 
 ### Installation of software ###
@@ -104,10 +120,10 @@ For subtitles, in the "tasks" section, find tasks "get-subtitles" and "find-subt
 </p></details>
 
 <details><summary>How to change add RSS feeds and other sources?</summary>
-You can add RSS feeds to config.yml in the task "download-series-rss".
+<p>You can add RSS feeds to config.yml in the task "download-series-rss".
 You can add search engines to the 'from' part of *-discover tasks ( download-seasons-discover,  download-series-discover and the 3 movies discover tasks). 
 You might need an urlrewrite, these are part of the "torrent" config, which is located below the "templates" and above the "tasks". Ask for help on the flexget forum (https://discuss.flexget.com). 
-<p>
+
 </p></details>
 
 <details><summary>How to upgrade Flexget?</summary>
