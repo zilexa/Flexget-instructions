@@ -131,17 +131,17 @@ You might need an urlrewrite, these are part of the "torrent" config, which is l
 <details><summary>How to upgrade Flexget?</summary>
 <p>
 If you have installed Flexget using Autosetup.sh OR manually by running the commands from autosetup.sh yourself, this is the only correct way to upgrade flexget:
-Check your version and the latest: `~/flexget/bin/flexget -V` 
-stop the flexget service: `sudo systemctl stop flexget`
-upgrade setuptools: `sudo pip3 install --upgrade setuptools`
-upgrade pip3: `pip3 install --upgrade pip` #not sure if necessary but won't do harm
-go to flexget folder: `cd ~/flexget/`
-upgrade upgrade pip: `bin/pip install --upgrade pip`
-upgrade upgrade flexget: `bin/pip install --upgrade flexget`
-activate the virtualenv: `source ~/flexget/bin/activate`
-upgrade transmissionrpc: `pip3 install transmissionrpc --upgrade` #loptional, last update was 2013
-upgrade subliminal: `pip3 install subliminal --upgrade` #optional, last update was 2016
-`exit`
-optional: on it's next run, Flexget will upgrade it's database if needed. This might cause issues. You can delete your database (`rm -r ~/flexget/db-config.sqlite`) and do the 2 "first run" tasks again (authorizing Trakt and run with execute --now). 
-Start the flexget service:`sudo systemctl start flexget`
-</p></details>
+<ul><li>Check your version and the latest: `~/flexget/bin/flexget -V` </li>
+<li>stop the flexget service: `sudo systemctl stop flexget`</li>
+<li>upgrade setuptools: `sudo pip3 install --upgrade setuptools`</li>
+<li>upgrade pip3: `pip3 install --upgrade pip` #not sure if necessary but won't do harm</li>
+<li>go to flexget folder: `cd ~/flexget/`</li>
+<li>upgrade upgrade pip: `bin/pip install --upgrade pip`</li>
+<li>upgrade upgrade flexget: `bin/pip install --upgrade flexget`</li>
+<li>activate the virtualenv: `source ~/flexget/bin/activate`</li>
+<li>upgrade transmissionrpc: `pip3 install transmissionrpc --upgrade` #loptional, last update was 2013</li>
+<li>upgrade subliminal: `pip3 install subliminal --upgrade` #optional, last update was 2016</li>
+<li>`exit`</li>
+<li>optional: on it's next run, Flexget will upgrade it's database if needed. This might cause issues. You can delete your database (`rm -r ~/flexget/db-config.sqlite`) and do the 2 "first run" tasks again (authorizing Trakt and run with execute --now). </li>
+<li>Start the flexget service:`sudo systemctl start flexget`</li>
+  </ul></p></details>
