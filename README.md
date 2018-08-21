@@ -131,7 +131,7 @@ You might need an urlrewrite, these are part of the "torrent" config, which is l
 <details><summary>How to upgrade Flexget?</summary>
 <p>
 If you have installed Flexget using Autosetup.sh OR manually by running the commands from autosetup.sh yourself, this is the only correct way to upgrade flexget:
-<ul><li>Check your version and the latest: `~/flexget/bin/flexget -V` </li>
+  <ul><li>Check your version and the latest: <code>~/flexget/bin/flexget -V</code> </li>
 <li>stop the flexget service: `sudo systemctl stop flexget`</li>
 <li>upgrade setuptools: `sudo pip3 install --upgrade setuptools`</li>
 <li>upgrade pip3: `pip3 install --upgrade pip` #not sure if necessary but won't do harm</li>
