@@ -79,7 +79,7 @@ Hardware: a Raspberry Pi 3 or (recommended) [Vero 4K](https://osmc.tv/store/). Y
 - `sudo systemctl stop transmission-damon`
 - `cd ~/.config/transmission-deamon`
 - `nano runflexget.sh`
-- paste this: `/home/osmc/flexget/bin/flexget execute --tasks find-* move-*`
+- paste this: `~/flexget/bin/flexget execute --tasks find-* move-*`
 and hit CTRL+O and CTRL+X
 - `chmod +x runflexget.sh`
 - `nano settings.json`
