@@ -345,13 +345,13 @@ tasks:
       - torrents
       - transmission-series
     inputs:
-      - rss: http://showrss.info/user/1450.rss?magnets=true&namespaces=true&name=null&quality=anyhd&re=yes
-#      - rss: https://eztv.ag/ezrss.xml
-#      - rss: https://rarbg.to/rssdd.php?category=1;18;41;49
-#      - rss: 
-#          url: https://zooqle.com/search?q=%2A+category%3ATV&fmt=rss
-#          title: 'torrent:fileName'
-#      - rss: https://www.limetorrents.cc/rss/20/
+      - rss: http://showrss.info/user/USERID.rss?magnets=true&namespaces=true&name=null&quality=anyhd&re=yes
+      - rss: https://eztv.ag/ezrss.xml
+      - rss: https://rarbg.to/rssdd.php?category=1;18;41;49
+      - rss: 
+          url: https://zooqle.com/search?q=%2A+category%3ATV&fmt=rss
+          title: 'torrent:fileName'
+      - rss: https://www.limetorrents.cc/rss/20/
 
       
 
