@@ -44,7 +44,7 @@ _And last, but not least:_
 
 - - - -
 
-**Installation of software**
+### Installation of software ###
 1. The first basic requirement: an RPi2 or RPi3 or (recommended) Vero 4K. Go to https://osmc.tv and order one. Install and OSMC. With your TV remote go to MyOSMC, App Store and install Transmission (recommended: also go to Services and enable SAMBA server). 
 
 2. A (free, private) account on Trakt.tv. Create a list called "tvshows" and add the shows you would like to see. 
@@ -57,7 +57,7 @@ Also mark episodes/seasons you have already seen as watched otherwise they will 
 5. Use [AUTOSETUP.SH](https://github.com/zilexa/autosetup "AUTOSETUP.SH") to install. All you have to do is add your Trakt account, showrss account, subtitles account, Transmission login and the location of your harddrive. Then you can run the file and sit back while it installs. More information via the link. 
 - Note you need to add all of this information manually to secrets.yml and config.yml (showrss user id) if you do not use Autosetup!. 
 
-**6. Configure Transmission to run 2 Flexget tasks after each completed download**
+#### 6. Configure Transmission to run 2 Flexget tasks after each completed download ####
 - `sudo systemctl stop transmission-damon`
 - `cd /home/osmc/.config/transmission-deamon`
 - `nano runflexget.sh`
@@ -71,20 +71,19 @@ and hit CTRL+O and CTRL+X
 hit CTRL+O and CTRL+X
 - `sudo systemctl stop transmission-damon`
 
-### 7. FIRST RUN: authorize flexget to use Trakt and run flexget once ###
-When finished, make sure you authorise trakt and run Flexget once via these two commands:
+#### 7. FIRST RUN: authorize flexget to use Trakt and run flexget once ####
 - Authorize Flexget to access Trakt (you need a phone or pc and login to Trakt website to finish this step): 
 `~/flexget/bin/flexget trakt auth YOURTRAKTUSERNAME`
 
 - Run Flexget once fully: 
 `~/flexget/bin/flexget execute --now`
 
-**8. START THE SERVICE AND LEAN BACK**
+#### 8. START THE SERVICE and go have your lazy couch experience ####
 - Start the service, it has been enabled by Autosetup already, only need to start it (will also happen on reboot): 
 `sudo systemctl start flexget`
 
 - - - -
-Frequently Asked Questions:
+### Frequently Asked Questions ###
 >>Note: To edit your config file, `nano ~/flexget/config.yml` or use Filezilla to access your device via SFTP and edit config.yml with your favorite text editor (highly recommended).
 <details><summary>How to change desired subtitle language?</summary>
 <p> 
