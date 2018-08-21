@@ -10,7 +10,7 @@ It uses your Trakt list and watched status to find, select, download,  organise,
 
 Content is downloaded using RSS Feeds and search engines that provide magnet links to torrent hives. 
 
-What does it do exactly?
+### What does it do exactly? ###
 In non-Flexget/non-technical terms, this guide will allow Flexget to do the following on a daily basis **AUTOMATICALLY**, some tasks are performed more often and for efficiency, not necessarily in this order:
 
 <details><summary>What Flexget does for TVshows...</summary>
