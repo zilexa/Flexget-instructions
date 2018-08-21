@@ -45,14 +45,15 @@ _And last, but not least:_
 - - - -
 
 ### Installation of software ###
-1. The first basic requirement: an RPi2 or RPi3 or (recommended) Vero 4K. Go to https://osmc.tv and order one. Install and OSMC. With your TV remote go to MyOSMC, App Store and install Transmission (recommended: also go to Services and enable SAMBA server). 
+Hardware: a Raspberry Pi 3 or (recommended) [Vero 4K](https://osmc.tv/store/). You can use any Debian based OS but I highly recommend [OSMC, "Open Source Meda Center"](https://osmc.tv/download/). It is an OS for Raspberry Pi and Vero, based on Debian and perfectly tweaked to run Kodi on those devices. Also buy a 2TB external USB harddrive. I highly recommend to go for a silent one, NOT a fast one (2.5", 7mm, 5400rpm is enough). 
 
-2. A (free, private) account on Trakt.tv. Create a list called "tvshows" and add the shows you would like to see. 
-Also mark episodes/seasons you have already seen as watched otherwise they will be downloaded. 
+1. After commecting your RPi3 or Vero to your tv, installing or updating OSMC (follow the instructions on https://osmc.tv/download) use your TV remote and go to MyOSMC > App Store and install Transmission (recommended: also go to Services and enable SAMBA server to be able to view your files on your Windows or Android device). 
+
+2. Create a (free, private) account on https://Trakt.tv. Create a list called "tvshows" and add the shows you would like to see, make sure these shows are not "ended" on trakt. Also mark episodes/seasons you have already seen as watched otherwise they will be downloaded. 
 
 3. If you need subtitles, create accounts with the same user/pw on opensubtitles.org and addic7ed.com.
 
-4. Create an account at showrss.info, add the series you like and go to your feed. write down the user ID you see in the url.
+4. Create an account at showrss.info, add the series you like and go to your personal feed. write down the userID number you see in the url, for example http://showrss.info/user/1234.rss?...., the userid is 1234. 
 
 5. Use [AUTOSETUP.SH](https://github.com/zilexa/autosetup "AUTOSETUP.SH") to install. All you have to do is add your Trakt account, showrss account, subtitles account, Transmission login and the location of your harddrive. Then you can run the file and sit back while it installs. More information via the link. 
 - Note you need to add all of this information manually to secrets.yml and config.yml (showrss user id) if you do not use Autosetup!. 
