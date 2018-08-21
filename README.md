@@ -103,7 +103,7 @@ hit CTRL+O and CTRL+X
 
 - - - -
 ### Frequently Asked Questions ###
->>Note: To edit your config file, `nano ~/flexget/config.yml` or use Filezilla to access your device via SFTP and edit config.yml with your favorite text editor (highly recommended).
+>To edit your config file, `nano ~/flexget/config.yml` or use Filezilla to access your device via SFTP and edit config.yml with your favorite text editor (highly recommended).
 <details><summary>How to change desired subtitle language?</summary>
 <p> 
 Default for series: search for 720p releases, if not found, accept the highest available quality up to 1080p. This means 720p is first preferred but if not found, 1080p will be selected, if also not found, any lower but acceptable (=HDTV release) will be accepted.
