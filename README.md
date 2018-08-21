@@ -15,49 +15,50 @@ What does it do exactly?
 In non-Flexget/non-technical terms, this guide will allow Flexget to do the following on a daily basis **AUTOMATICALLY**, some tasks are performed more often and for efficiency, not necessarily in this order:
 
 <details><summary>What Flexget does for TVshows:</summary>
-<p> <ul>
-  <li>Get the series titles you follow on Trakt.</li>
-  <li>Finds the next episode you need based on your Watched Status in Trakt.</li>
-  <li>Checks which series episodes you might already have on your drive.</li>
-  <li>Looks for the latest episodes on RSS feeds.</li>
-  <li>Looks for your old series seasons and single episodes by discovering them on several websites.</li>
-  <li>Downloads if they match your requirements to prevent low quality files or language specific versions from being downloaded. </li>
-  <li>Download 720p HD quality, if not found, accept 1080p HD quality on the second run.</li></ul> 
-</p></details>
+<p><ul>
+<li>Get the series titles you follow on Trakt.</li>
+<li>Finds the next episode you need based on your Watched Status in Trakt.</li>
+<li>Checks which series episodes you might already have on your drive.</li>
+<li>Looks for the latest episodes on RSS feeds.</li>
+<li>Looks for your old series seasons and single episodes by discovering them on several websites.</li>
+<li>Downloads if they match your requirements to prevent low quality files or language specific versions from being downloaded. </li>
+<li>Download 720p HD quality, if not found, accept 1080p HD quality on the second run.</li>
+</ul></p></details>
 
 <details><summary>What Flexget does for Movies</summary>
-<p>
-- Gets the movies you would like to see from your Trakt "watchlist".
-- Looks for movies on your drive and removes them from your Trakt "watchlist". 
-- Looks for any manually downloaded .torrent file in your Downloads\tempmedia folder.
-- Looks for movies by discovering them on several websites. 
-- Quality: no prereleases or cinema recordings. Only Bluray rips in 1080p with a minimum filesize. But there are 2 fallbacks:
-- If 1080p with a certain minimum filesize is not available, it will fallback to a lower minimal filesize.  
-- If also not available, it will fallback to 720p with a minimum filesize treshold for 720p. 
-</p></details>
+<p><ul>
+<li> Gets the movies you would like to see from your Trakt "watchlist".</li>
+<li> Looks for movies on your drive and removes them from your Trakt "watchlist". </li>
+<li> Looks for any manually downloaded .torrent file in your Downloads\tempmedia folder.</li>
+<li> Looks for movies by discovering them on several websites. </li>
+<li> Quality: no prereleases or cinema recordings. Only Bluray rips in 1080p with a minimum filesize. But there are 2 fallbacks:</li>
+<li> If 1080p with a certain minimum filesize is not available, it will fallback to a lower minimal filesize.  </li>
+<li> If also not available, it will fallback to 720p with a minimum filesize treshold for 720p. </li>
+</ul></p></details>
 
 <details><summary>And even subtitles</summary>
-<p>
-- Find subtitles when the download is finished using the original filename. 
-- Add downloaded files without subs to the subtitle queue. 
-- Keep searching for subtitles for all files in the queue even after they have been renamed and moved to their proper location.
-</p></details>
+<p><ul>
+<li> Find subtitles when the download is finished using the original filename. </li>
+<li> Add downloaded files without subs to the subtitle queue. </li>
+<li> Keep searching for subtitles for all files in the queue even after they have been renamed and moved to their proper location.</li>
+</ul></p></details>
 
 <details><summary>How flexget organises everything</summary>
-<p>
-- Purges Transmission, which is used for downloading. This will cleanup Transmission.
-- Always downloads the main file only, no other files that are usually present. No more clutter! 
-- Moves & renames tv shows and movies after download and subtitle search is done and organises them properly. 
-- All episodes are saved in season-specific folders. This allows you to simply delete a season folder to free up space.  
-- Filenames will contain series or movies title, episode or year and quality release. 
-</p></details> 
+<p><ul>
+<li> Purges Transmission, which is used for downloading. This will cleanup Transmission.</li>
+<li> Always downloads the main file only, no other files that are usually present. No more clutter! </li>
+<li> Moves & renames tv shows and movies after download and subtitle search is done and organises them properly. </li>
+<li> All episodes are saved in season<li>specific folders. This allows you to simply delete a season folder to free up space.  </li>
+<li> Filenames will contain series or movies title, episode or year and quality release. </li>
+</ul></p></details>
 
 <details><summary>And last, but not least..</summary>
-- Triggers an update of your Kodi library after files have been processed! They will appear in your Kodi library automatically. 
-- Cleanup (purge) your Trakt account by removing fully watched series that have ended (or are cancelled) 
-- Delete old seasons from your harddrive after you have started watching the next season
-- Delete tv shows from your harddrive after you have watched all seasons and the series has ended. 
-</p></details>
+<p><ul>
+<li> Triggers an update of your Kodi library after files have been processed! They will appear in your Kodi library automatically. </li>
+<li> Cleanup (purge) your Trakt account by removing fully watched series that have ended (or are cancelled) </li>
+<li> Delete old seasons from your harddrive after you have started watching the next season</li>
+<li> Delete tv shows from your harddrive after you have watched all seasons and the series has ended. </li>
+</ul></p></details>
 
 - - - -
 
