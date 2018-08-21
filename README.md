@@ -77,7 +77,7 @@ Hardware: a Raspberry Pi 3 or (recommended) [Vero 4K](https://osmc.tv/store/). Y
 
 #### 6. Configure Transmission to run 2 Flexget tasks after each completed download ####
 - `sudo systemctl stop transmission-damon`
-- `cd /home/osmc/.config/transmission-deamon`
+- `cd ~/.config/transmission-deamon`
 - `nano runflexget.sh`
 - paste this: /home/osmc/flexget/bin/flexget execute --tasks find-* move-*  
 and hit CTRL+O and CTRL+X
