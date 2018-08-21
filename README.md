@@ -36,14 +36,14 @@ In non-Flexget/non-technical terms, this guide will allow Flexget to do the foll
 - If also not available, it will fallback to 720p with a minimum filesize treshold for 720p. 
 </p></details>
 
-<details><summary>_And even subtitles_</summary>
+<details><summary>And even subtitles</summary>
 <p>
 - Find subtitles when the download is finished using the original filename. 
 - Add downloaded files without subs to the subtitle queue. 
 - Keep searching for subtitles for all files in the queue even after they have been renamed and moved to their proper location.
 </p></details>
 
-<details><summary>_How flexget organises everything_</summary>
+<details><summary>How flexget organises everything</summary>
 <p>
 - Purges Transmission, which is used for downloading. This will cleanup Transmission.
 - Always downloads the main file only, no other files that are usually present. No more clutter! 
@@ -52,12 +52,13 @@ In non-Flexget/non-technical terms, this guide will allow Flexget to do the foll
 - Filenames will contain series or movies title, episode or year and quality release. 
 </p></details> 
 
-<details><summary>_And last, but not least.._</summary>
+<details><summary>And last, but not least..</summary>
 - Triggers an update of your Kodi library after files have been processed! They will appear in your Kodi library automatically. 
 - Cleanup (purge) your Trakt account by removing fully watched series that have ended (or are cancelled) 
 - Delete old seasons from your harddrive after you have started watching the next season
 - Delete tv shows from your harddrive after you have watched all seasons and the series has ended. 
 </p></details>
+
 - - - -
 
 ### Installation of software ###
