@@ -15,14 +15,14 @@ What does it do exactly?
 In non-Flexget/non-technical terms, this guide will allow Flexget to do the following on a daily basis **AUTOMATICALLY**, some tasks are performed more often and for efficiency, not necessarily in this order:
 
 <details><summary>What Flexget does for TVshows:</summary>
-<p>
-*Get the series titles you follow on Trakt.
-*Finds the next episode you need based on your Watched Status in Trakt.
-*Checks which series episodes you might already have on your drive. 
-* Looks for the latest episodes on RSS feeds.
-* Looks for your old series seasons and single episodes by discovering them on several websites.
-* Downloads if they match your requirements to prevent low quality files or language specific versions from being downloaded. 
-* Download 720p HD quality, if not found, accept 1080p HD quality on the second run.
+<p> <ul>
+  <li>Get the series titles you follow on Trakt.</li>
+  <li>Finds the next episode you need based on your Watched Status in Trakt.</li>
+  <li>Checks which series episodes you might already have on your drive.</li>
+  <li>Looks for the latest episodes on RSS feeds.</li>
+  <li>Looks for your old series seasons and single episodes by discovering them on several websites.</li>
+  <li>Downloads if they match your requirements to prevent low quality files or language specific versions from being downloaded. </li>
+  <li>Download 720p HD quality, if not found, accept 1080p HD quality on the second run.</li></ul> 
 </p></details>
 
 <details><summary>What Flexget does for Movies</summary>
