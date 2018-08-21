@@ -132,16 +132,16 @@ You might need an urlrewrite, these are part of the "torrent" config, which is l
 <p>
 If you have installed Flexget using Autosetup.sh OR manually by running the commands from autosetup.sh yourself, this is the only correct way to upgrade flexget:
   <ul><li>Check your version and the latest: <code>~/flexget/bin/flexget -V</code> </li>
-<li>stop the flexget service: `sudo systemctl stop flexget`</li>
-<li>upgrade setuptools: `sudo pip3 install --upgrade setuptools`</li>
-<li>upgrade pip3: `pip3 install --upgrade pip` #not sure if necessary but won't do harm</li>
-<li>go to flexget folder: `cd ~/flexget/`</li>
-<li>upgrade upgrade pip: `bin/pip install --upgrade pip`</li>
-<li>upgrade upgrade flexget: `bin/pip install --upgrade flexget`</li>
-<li>activate the virtualenv: `source ~/flexget/bin/activate`</li>
-<li>upgrade transmissionrpc: `pip3 install transmissionrpc --upgrade` #loptional, last update was 2013</li>
-<li>upgrade subliminal: `pip3 install subliminal --upgrade` #optional, last update was 2016</li>
-<li>`exit`</li>
-<li>optional: on it's next run, Flexget will upgrade it's database if needed. This might cause issues. You can delete your database (`rm -r ~/flexget/db-config.sqlite`) and do the 2 "first run" tasks again (authorizing Trakt and run with execute --now). </li>
-<li>Start the flexget service:`sudo systemctl start flexget`</li>
+<li>stop the flexget service: <code>sudo systemctl stop flexget</code></li>
+<li>upgrade setuptools: <code>sudo pip3 install --upgrade setuptools</code></li>
+<li>upgrade pip3: <code>pip3 install --upgrade pip</code> #not sure if necessary but won't do harm</li>
+<li>go to flexget folder: <code>cd ~/flexget/</code></li>
+<li>upgrade upgrade pip: <code>bin/pip install --upgrade pip</code></li>
+<li>upgrade upgrade flexget: <code>bin/pip install --upgrade flexget</code></li>
+<li>activate the virtualenv: <code>source ~/flexget/bin/activate</code></li>
+<li>upgrade transmissionrpc: <code>pip3 install transmissionrpc --upgrade</code> #loptional, last update was 2013</li>
+<li>upgrade subliminal: <code>pip3 install subliminal --upgrade</code> #optional, last update was 2016</li>
+<li><code>exit</code></li>
+<li>optional: on it's next run, Flexget will upgrade it's database if needed. This might cause issues. You can delete your database (<code>rm -r ~/flexget/db-config.sqlite</code>) and do the 2 "first run" tasks again (authorizing Trakt and run with execute --now). </li>
+<li>Start the flexget service:<code>sudo systemctl start flexget</code></li>
   </ul></p></details>
