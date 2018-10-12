@@ -76,8 +76,8 @@ Hardware: a Raspberry Pi 3 or (recommended) [Vero 4K](https://osmc.tv/store/). Y
 - Note you need to add all of this information manually to secrets.yml and config.yml (showrss user id) if you do not use Autosetup!. 
 
 #### 6. Configure Transmission to run 2 Flexget tasks after each completed download ####
-- `sudo systemctl stop transmission-daemon`
-- `cd ~/.config/transmission-daemon`
+- `sudo systemctl stop transmission` (could be called transmission-daemon)
+- `cd ~/.config/transmission`
 - `nano runflexget.sh`
 - paste this: `~/flexget/bin/flexget execute --tasks find-* move-*`
 and hit CTRL+O and CTRL+X
@@ -87,7 +87,7 @@ and hit CTRL+O and CTRL+X
 `"script-torrent-done-enabled": true,
 "script-torrent-done-filename": "~/.config/transmission-daemon/runflexget.sh",`
 hit CTRL+O and CTRL+X
-- `sudo systemctl stop transmission-damon`
+- `sudo systemctl stop transmission`
 
 #### 7. FIRST RUN: authorize flexget to use Trakt and run flexget once ####
 - Authorize Flexget to access Trakt (you need a phone or pc and login to Trakt website to finish this step): 
