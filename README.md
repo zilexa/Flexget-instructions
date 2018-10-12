@@ -76,8 +76,8 @@ Hardware: a Raspberry Pi 3 or (recommended) [Vero 4K](https://osmc.tv/store/). Y
 - Note you need to add all of this information manually to secrets.yml and config.yml (showrss user id) if you do not use Autosetup!. 
 
 #### 6. Configure Transmission to run 2 Flexget tasks after each completed download ####
-- `sudo systemctl stop transmission-damon`
-- `cd ~/.config/transmission-deamon`
+- `sudo systemctl stop transmission-daemon`
+- `cd ~/.config/transmission-daemon`
 - `nano runflexget.sh`
 - paste this: `~/flexget/bin/flexget execute --tasks find-* move-*`
 and hit CTRL+O and CTRL+X
