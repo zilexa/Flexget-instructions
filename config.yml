@@ -31,8 +31,8 @@ templates:
       settings:
         identified_by: ep
         timeframe: 1 hours
-        target: webrip+ 720p !10bit h265
-        quality: webrip+ <=1080p !10bit xvid+
+        target: webrip+ <1080p h264+
+        quality: webrip+ <=1080p h264+
         propers: 48 hours
         specials: no
         season_packs: 3
@@ -49,7 +49,7 @@ templates:
   movies-HQ:
     tmdb_lookup: yes
     movie_list: trakt-movies
-    quality: 1080p webdl+ !10bit !h265
+    quality: 1080p webdl+
     content_size:
       min: 8000
       max: 25000
@@ -57,7 +57,7 @@ templates:
   movies-NQ:
     tmdb_lookup: yes
     movie_list: trakt-movies
-    quality: 1080p webdl+ !10bit !h265
+    quality: 1080p webdl+
     content_size:
       min: 2000
       max: 7999
@@ -65,7 +65,7 @@ templates:
   movies-LQ:
     tmdb_lookup: yes
     movie_list: trakt-movies
-    quality: 720p webdl+ !10bit !h265
+    quality: 720p webdl+
     content_size:
       min: 900
       max: 8000
@@ -345,7 +345,7 @@ tasks:
       - torrents
       - transmission-series
     inputs:
-      - rss: http://showrss.info/user/USERID.rss?magnets=true&namespaces=true&name=null&quality=anyhd&re=yes
+      - rss: http://showrss.info/user/YOURIDHERE.rss?magnets=true&namespaces=true&name=null&quality=anyhd&re=yes
       - rss: https://eztv.ag/ezrss.xml
       - rss: https://rarbg.to/rssdd.php?category=1;18;41;49
       - rss: 
@@ -368,7 +368,7 @@ tasks:
     thetvdb_lookup: no
     magnets: yes
     convert_magnet:
-      timeout: 120 seconds
+      timeout: 180 seconds
       force: yes
     discover:
       release_estimations: strict
@@ -397,7 +397,7 @@ tasks:
       - series-metainfo
     magnets: yes
     convert_magnet:
-      timeout: 120 seconds
+      timeout: 180 seconds
       force: yes
     discover:
       release_estimations: strict
@@ -484,7 +484,7 @@ tasks:
       - "/{? folder.root ?}{? folder.movies ?}"
     magnets: yes
     convert_magnet:
-      timeout: 120 seconds
+      timeout: 180 seconds
       force: yes
     seen: local
     discover:
@@ -520,7 +520,7 @@ tasks:
       - "/{? folder.root ?}{? folder.movies ?}"
     magnets: yes
     convert_magnet:
-      timeout: 120 seconds
+      timeout: 180 seconds
       force: yes
     seen: local
     discover:
@@ -556,7 +556,7 @@ tasks:
       - "/{? folder.root ?}{? folder.movies ?}"
     magnets: yes
     convert_magnet:
-      timeout: 120 seconds
+      timeout: 180 seconds
       force: yes
     seen: local
     discover:
@@ -661,7 +661,7 @@ tasks:
     kodi_library:
       action: scan
       category: video
-      url: http://192.168.1.1
+      url: http://192.168.88.10
       port: 8080
     list_add:
       - subtitle_list:
@@ -782,7 +782,7 @@ tasks:
     kodi_library:
       action: scan
       category: video
-      url: http://192.168.1.1
+      url: http://192.168.88.10
       port: 8080
     list_add:
       - subtitle_list:
@@ -872,5 +872,5 @@ tasks:
     kodi_library:
       action: clean
       category: video
-      url: http://192.168.1.1
+      url: http://192.168.88.10
       port: 8080    
