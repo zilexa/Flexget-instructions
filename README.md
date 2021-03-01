@@ -1,3 +1,5 @@
+ABANDONED: switched to a homeserver with sonarr etc instead: https://github.com/zilexa/Homeserver
+
 Want to have free choice of on-demand tv content? Are on-demand subscription services limiting the available content and forcing you to watch a series within a few months? Did your favourite tvshow or movie became unavailable or is your TV subscription only offering you low quality crap? 
 Enjoy the freedom. Keep paying for all those, since it is the only way to pay for content (due too a stubborn industry) but also go for free choice.  
 
